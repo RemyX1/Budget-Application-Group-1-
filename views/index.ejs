@@ -329,9 +329,11 @@
           if (data.error)
             $(this).html('<p>' + data.error + '</p>').slideDown();
           else {
+            console.log(data);
             var html = '';
             html += '<tr><td>Institution name</td><td>' + data.institution.name + '</td></tr>';
             html += '<tr><td>Billed products</td><td>' + data.item.billed_products.join(', ') + '</td></tr>';
+            html += '<tr><td>Item ID</td><td>' + data.item.item_id + '</td></tr>';
             html += '<tr><td>Available products</td><td>' + data.item.available_products.join(', ') + '</td></tr>';
 
             $(this).html(html).slideDown();
