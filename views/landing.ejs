@@ -13,7 +13,17 @@
 <body>
     <main>
         <h1>Hello, this is the new landing page.</h1>
+
+        <button id="loginButton">Click Here To Log In!</button>
     </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
+    <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
+    <script>
+        $('#loginButton').on('click', function () {
+        window.location = '/index';
+        });
+    </script>
 
 </body>
 
