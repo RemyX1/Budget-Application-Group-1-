@@ -204,3 +204,7 @@ Hide things
 #steps {
   display: none;
 }
+
+#set-transactions-card{
+  display: none;
+}

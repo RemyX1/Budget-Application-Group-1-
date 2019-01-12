@@ -67,10 +67,13 @@
                 <div class="card-content white-text">
                   <span class="card-title">Excellent! Your budget has been set to $<span id="budget-set"></span>!</span>
                   <p>Click the button below to load transactions from this month.</p>
-                  
+
                 </div>
                 <div class="card-action">
                   <button id="get-transactions-btn" class="waves-effect waves-light btn">Get Transactions</button>
+                  <table>
+                    <tbody id="get-transactions-data"></tbody>
+                  </table>
                 </div>
               </div>
             </div>
@@ -489,11 +492,12 @@
       return match && decodeURIComponent(match[1].replace(/\+/g, " "));
     }
 
-    $('#submit-budget').on('click', function(){
+    $('#submit-budget').on('click', function () {
       var budget = $('#budget-amount').val();
       console.log(budget);
       $('#set-budget-card').fadeOut();
       $('#budget-set').text(budget);
+      $('#set-transactions-card').fadeIn();
 
     });
   </script>
