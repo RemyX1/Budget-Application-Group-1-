@@ -8,6 +8,26 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <!-- <link rel="stylesheet" href="https://threads.plaid.com/threads.css"> -->
 
+  <!-- Firebase Inclusion -->
+  <script src="https://www.gstatic.com/firebasejs/5.7.2/firebase-app.js"></script>
+  <!-- Firebase services added: authentication, database -->
+  <script src="https://www.gstatic.com/firebasejs/5.7.2/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.7.2/firebase-database.js"></script>
+  <!-- Initialize Firebase -->
+  <script>
+    var config = {
+      apiKey: "AIzaSyBiqwDiXaTG3-qqRjrMybgdXMikDP6tmSk",
+      authDomain: "gt-coding-project-1.firebaseapp.com",
+      databaseURL: "https://gt-coding-project-1.firebaseio.com",
+      projectId: "gt-coding-project-1",
+      storageBucket: "gt-coding-project-1.appspot.com",
+      messagingSenderId: "705133084492"
+    };
+    firebase.initializeApp(config);
+  </script>
+  <!-- Bring in Firebase UI -->
+  <script src="https://cdn.firebase.com/libs/firebaseui/3.1.1/firebaseui.js"></script>
+  <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.1.1/firebaseui.css" />
 
   <link rel="stylesheet" type="text/css" href="style.css">
   <meta name="viewport" content="width=device-width, initial-scale=1">
