@@ -365,6 +365,7 @@
             });
           });
         } else {
+          console.log(data.transactions.transactions);
           $('#get-transactions-data').slideUp(function() {
             var html = '<tr><td><strong>Name</strong></td><td><strong>Amount</strong></td><td><strong>Date</strong></td></tr>';
             data.transactions.transactions.forEach(function(txn, idx) {
