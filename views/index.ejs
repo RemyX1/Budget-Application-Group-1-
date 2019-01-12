@@ -48,10 +48,11 @@
           <div class="card teal lighten-2">
             <div class="card-content white-text">
               <span class="card-title">Excellent! Your budget has been set to <span id="budget-set"></span>!</span>
-              <p>Click the button below to load transactions from this month. Next, categorize these transactions as
-                either Discretionary or Recurring. Only Discretionary transactions will be tracked in your budget.</p>
+              <p>Click the button below to load transactions from this month. Next, select transactions that
+                should be included in the Discretionary budget. Only Discretionary transactions will be tracked in your
+                budget.</p>
             </div>
-            <div class="card-action">
+            <div id="card-action" class="card-action">
               <button id="get-transactions-btn" class="waves-effect waves-light btn">Get Transactions</button>
               <table>
                 <tbody id="get-transactions-data"></tbody>
@@ -96,6 +97,11 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
   <script>
+  // GLOBAL VARS
+  var budget;
+
+
+
     (function ($) {
       var products = '<%= PLAID_PRODUCTS %>'.split(',');
       if (products.includes('assets')) {
@@ -271,15 +277,19 @@
           } else {
             console.log(data.transactions.transactions);
             $('#get-transactions-data').slideUp(function () {
-              var html = '<tr><td><strong>Name</strong></td><td><strong>Amount</strong></td><td><strong>Date</strong></td><td><strong>Category</strong></td></tr>';
+              var html = '<tr><td><strong>Name</strong></td><td><strong>Amount</strong></td><td><strong>Date</strong></td><td><strong>Include in Budget?</strong></td></tr>';
               data.transactions.transactions.forEach(function (txn, idx) {
                 html += '<tr>';
                 html += '<td>' + txn.name + '</td>';
                 html += '<td>$' + txn.amount + '</td>';
                 html += '<td>' + txn.date + '</td>';
-                html += '<td>' + "<button>Test</button>" + '</td>';
+                html += '<td>' + "<button data-txn=" + txn.amount + " class='waves-effect waves-light btn teal darken-3'>Include</button>" + '</td>';
                 html += '</tr>';
               });
+              var button = $('<button>').text("Complete");
+              button.attr("class", "waves-effect waves-light btn teal darken-3");
+              button.attr("id", "submit-tran-btn");
+              $("#card-action").append(button);
 
               $(this).slideUp(function () {
                 $(this).html(html).slideDown();
@@ -288,6 +298,9 @@
           }
         });
       });
+
+
+
 
       // $('#get-balance-btn').on('click', function (e) {
       //   $.get('/balance', function (data) {
@@ -348,7 +361,7 @@
     }
 
     $('#submit-budget').on('click', function () {
-      var budget = $('#budget-amount').val();
+      budget = $('#budget-amount').val();
       console.log(budget);
       $('#set-budget-card').fadeOut();
       $('#budget-set').text("$" + budget);
