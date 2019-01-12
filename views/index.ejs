@@ -42,6 +42,26 @@
 
     <div id="app" class="connected-view">
 
+      <!-- Card that displays transactions to be sorted as discretionary or recurring -->
+      <div class="row" id="set-transactions-card">
+        <div class="col s12 m12">
+          <div class="card teal lighten-2">
+            <div class="card-content white-text">
+              <span class="card-title">Excellent! Your budget has been set to <span id="budget-set"></span>!</span>
+              <p>Click the button below to load transactions from this month. Next, categorize these transactions as
+                either Discretionary or Recurring. Only Discretionary transactions will be tracked in your budget.</p>
+            </div>
+            <div class="card-action">
+              <button id="get-transactions-btn" class="waves-effect waves-light btn">Get Transactions</button>
+              <table>
+                <tbody id="get-transactions-data"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
       <!-- Card to set you budget -->
       <div class="row" id="set-budget-card">
         <div class="col s12 m12">
@@ -63,24 +83,7 @@
         </div>
       </div>
 
-      <!-- Card that displays transactions to be sorted as discretionary or recurring -->
-      <div class="row" id="set-transactions-card">
-        <div class="col s12 m12">
-          <div class="card teal lighten-2">
-            <div class="card-content white-text">
-              <span class="card-title">Excellent! Your budget has been set to <span id="budget-set"></span>!</span>
-              <p>Click the button below to load transactions from this month. Next, categorize these transactions as
-                either Discretionary or Recurring. Only Discretionary transactions will be tracked in your budget.</p>
-            </div>
-            <div class="card-action">
-              <button id="get-transactions-btn" class="waves-effect waves-light btn">Get Transactions</button>
-              <table>
-                <tbody id="get-transactions-data"></tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
+
 
 
     </div>
