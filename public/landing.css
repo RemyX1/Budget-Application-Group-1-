@@ -1,0 +1,27 @@
+#Banner {
+
+margin: 0px 0px 10px 0px;
+
+}
+
+#loginButton {
+
+
+align-items: center;
+
+}
+
+
+
+#loginButton:hover {
+
+
+color: black;
+
+
+}
+
+.wrapper {
+
+    text-align: center
+}
