@@ -14,7 +14,7 @@
 </head>
 
 <body>
-  <main class="main">
+  <div class="container">
     <div class="grid">
       <div class="grid__column grid__column--is-twelve-columns">
         <div id="banner" class="everpresent-content">
@@ -36,54 +36,54 @@
           <button id="link-btn" class="waves-effect waves-light btn"><i class="material-icons right">attach_money</i>Connect
             Your Account</button>
         </div>
+      </div>
 
-        <div id="app" class="connected-view">
+      <div id="app" class="connected-view">
 
-          <!-- Card to set you budget -->
-          <div class="row" id="set-budget-card">
-            <div class="col s12 m12">
-              <div class="card teal lighten-2">
-                <div class="card-content white-text">
-                  <span class="card-title">Your Budget</span>
-                  <p>Use the slider to create your budget. Estimate your monthly amount of discretionary spending.</p>
-                  <br>
-                  <form action="#">
-                    <p class="range-field">
-                      <input type="range" id="budget-amount" min="25" max="1000" />
-                    </p>
-                  </form>
-                </div>
-                <div class="card-action">
-                  <button id="submit-budget" class="waves-effect waves-light btn">Submit</button>
-                </div>
+        <!-- Card to set you budget -->
+        <div class="row" id="set-budget-card">
+          <div class="col s12 m12">
+            <div class="card teal lighten-2">
+              <div class="card-content white-text">
+                <span class="card-title">Your Budget</span>
+                <p>Use the slider to create your budget. Estimate your monthly amount of discretionary spending.</p>
+                <br>
+                <form action="#">
+                  <p class="range-field">
+                    <input type="range" id="budget-amount" min="25" max="1000" />
+                  </p>
+                </form>
+              </div>
+              <div class="card-action">
+                <button id="submit-budget" class="waves-effect waves-light btn">Submit</button>
               </div>
             </div>
           </div>
-
-          <!-- Card that displays transactions to be sorted as discretionary or recurring -->
-          <div class="row" id="set-transactions-card">
-            <div class="col s12 m12">
-              <div class="card teal lighten-2">
-                <div class="card-content white-text">
-                  <span class="card-title">Excellent! Your budget has been set to <span id="budget-set"></span>!</span>
-                  <p>Click the button below to load transactions from this month.</p>
-                </div>
-                <div class="card-action">
-                  <button id="get-transactions-btn" class="waves-effect waves-light btn">Get Transactions</button>
-                  <table>
-                    <tbody id="get-transactions-data"></tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
-
-
-
         </div>
+
+        <!-- Card that displays transactions to be sorted as discretionary or recurring -->
+        <div class="row" id="set-transactions-card">
+          <div class="col s12 m12">
+            <div class="card teal lighten-2">
+              <div class="card-content white-text">
+                <span class="card-title">Excellent! Your budget has been set to <span id="budget-set"></span>!</span>
+                <p>Click the button below to load transactions from this month.</p>
+              </div>
+              <div class="card-action">
+                <button id="get-transactions-btn" class="waves-effect waves-light btn">Get Transactions</button>
+                <table>
+                  <tbody id="get-transactions-data"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
       </div>
     </div>
-  </main>
+  </div>
 
 
   <!-- Start inline Javscript -->
@@ -266,7 +266,7 @@
           } else {
             console.log(data.transactions.transactions);
             $('#get-transactions-data').slideUp(function () {
-              var html = '<tr><td><strong>Name</strong></td><td><strong>Amount</strong></td><td><strong>Date</strong></td></tr>';
+              var html = '<tr><td><strong>Name</strong></td><td><strong>Amount</strong></td><td><strong>Date</strong></td><td><strong>Category</strong></td></tr>';
               data.transactions.transactions.forEach(function (txn, idx) {
                 html += '<tr>';
                 html += '<td>' + txn.name + '</td>';
