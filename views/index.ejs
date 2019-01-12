@@ -34,7 +34,7 @@
 </head>
 
 <body>
-  <main class="main">
+  <div class="container">
     <div class="grid">
       <div class="grid__column grid__column--is-twelve-columns">
         <div id="banner" class="everpresent-content">
@@ -56,205 +56,62 @@
           <button id="link-btn" class="waves-effect waves-light btn"><i class="material-icons right">attach_money</i>Connect
             Your Account</button>
         </div>
-
-        <div id="app" class="connected-view">
-
-          <!-- Card to set you budget -->
-          <div class="row" id="set-budget-card">
-            <div class="col s12 m12">
-              <div class="card teal lighten-2">
-                <div class="card-content white-text">
-                  <span class="card-title">Your Budget</span>
-                  <p>Use the slider to create your budget. Estimate your monthly amount of discretionary spending.</p>
-                  <br>
-                  <form action="#">
-                    <p class="range-field">
-                      <input type="range" id="budget-amount" min="25" max="1000" />
-                    </p>
-                  </form>
-                </div>
-                <div class="card-action">
-                  <button id="submit-budget" class="waves-effect waves-light btn">Submit</button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Card that displays transactions to be sorted as discretionary or recurring -->
-          <div class="row" id="set-transactions-card">
-            <div class="col s12 m12">
-              <div class="card teal lighten-2">
-                <div class="card-content white-text">
-                  <span class="card-title">Excellent! Your budget has been set to $<span id="budget-set"></span>!</span>
-                  <p>Click the button below to load transactions from this month.</p>
-                  
-                </div>
-                <div class="card-action">
-                  <button id="get-transactions-btn" class="waves-effect waves-light btn">Get Transactions</button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="box">
-            <h3 class="box__heading">Products</h3>
-
-            <!-- Auth -->
-            <div class="item-data-row">
-              <div class="item-data-row__left">
-                <div class="item-data-row__request-type">post</div>
-              </div>
-              <div class="item-data-row__center">
-                <div class="item-data-row__nicename">Auth</div>
-                <div class="item-data-row__endpoint">/auth/get</div>
-                <div class="item-data-row__description">Retrieve account and routing numbers for checking and savings
-                  accounts.</div>
-              </div>
-              <div class="item-data-row__right">
-                <button id="get-auth-btn" class="waves-effect waves-light btn">Send request</button>
-              </div>
-              <div class="item-data-row__response">
-                <table>
-                  <tbody id="get-auth-data"></tbody>
-                </table>
-              </div>
-            </div>
-
-            <!--Transactions -->
-            <div class="item-data-row">
-              <div class="item-data-row__left">
-                <div class="item-data-row__request-type">post</div>
-              </div>
-              <div class="item-data-row__center">
-                <div class="item-data-row__nicename">Transactions</div>
-                <div class="item-data-row__endpoint">/transactions/get</div>
-                <div class="item-data-row__description">Retrieve transactions for credit and depository accounts.</div>
-              </div>
-              <div class="item-data-row__right">
-                <button id="get-transactions-btn" class="waves-effect waves-light btn">Send request</button>
-              </div>
-              <div class="item-data-row__response">
-                <table>
-                  <tbody id="get-transactions-data"></tbody>
-                </table>
-              </div>
-            </div>
-
-            <!-- Identity -->
-            <div class="item-data-row">
-              <div class="item-data-row__left">
-                <div class="item-data-row__request-type">post</div>
-              </div>
-              <div class="item-data-row__center">
-                <div class="item-data-row__nicename">Identity</div>
-                <div class="item-data-row__endpoint">/identity/get</div>
-                <div class="item-data-row__description">Retrieve Identity information on file with the bank. Reduce
-                  fraud by comparing user-submitted data to validate identity.</div>
-              </div>
-              <div class="item-data-row__right">
-                <button id="get-identity-btn" class="waves-effect waves-light btn">Send request</button>
-              </div>
-              <div class="item-data-row__response">
-                <table>
-                  <tbody id="get-identity-data"></tbody>
-                </table>
-              </div>
-            </div>
-
-            <!-- Balance -->
-            <div class="item-data-row">
-              <div class="item-data-row__left">
-                <div class="item-data-row__request-type">post</div>
-              </div>
-              <div class="item-data-row__center">
-                <div class="item-data-row__nicename">Balance</div>
-                <div class="item-data-row__endpoint">/accounts/balance/get</div>
-                <div class="item-data-row__description">Check balances in real time to prevent non-sufficient funds
-                  fees.</div>
-              </div>
-              <div class="item-data-row__right">
-                <button id="get-balance-btn" class="waves-effect waves-light btn">Send request</button>
-              </div>
-              <div class="item-data-row__response">
-                <table>
-                  <tbody id="get-balance-data"></tbody>
-                </table>
-              </div>
-            </div>
-
-            <!-- Assets (hidden unless 'assets' is included in the product list) -->
-            <div id='assets' class="item-data-row" style='display:none;'>
-              <div class="item-data-row__left">
-                <div class="item-data-row__request-type">post</div>
-              </div>
-              <div class="item-data-row__center">
-                <div class="item-data-row__nicename">Assets</div>
-                <div class="item-data-row__endpoint">/asset_report/*</div>
-                <div class="item-data-row__description">Create a point-in-time snapshot of a user's assets.</div>
-              </div>
-
-              <div class="item-data-row__right">
-                <button id="get-assets-btn" class="waves-effect waves-light btn">Send request</button>
-
-                <a id="download-assets-pdf-btn" class="button button--is-small button--is-primary button--is-full-width"
-                  style="display: none; margin: 10px 0px;" ;>Download as PDF</a>
-              </div>
-
-              <div class="item-data-row__response">
-                <table>
-                  <tbody id="get-assets-data"></tbody>
-                </table>
-              </div>
-            </div>
-
-          </div>
-
-          <!-- <div class="box">
-            <h3 class="box__heading">Item management</h3>
-
-            <div class="item-data-row">
-              <div class="item-data-row__left">
-                <div class="item-data-row__request-type">post</div>
-              </div>
-              <div class="item-data-row__center">
-                <div class="item-data-row__endpoint">/item/get</div>
-                <div class="item-data-row__description">Retrieve information about an Item, like the institution, billed products, available products, and webhook information.</div>
-              </div>
-
-              <div class="item-data-row__right">
-                <button id="get-item-btn" class="button button--is-small button--is-default button--is-full-width">Send request</button>
-              </div>
-
-              <div class="item-data-row__response">
-                <table><tbody id="get-item-data"></tbody></table>
-              </div>
-            </div>
-
-            <div class="item-data-row">
-              <div class="item-data-row__left">
-                <div class="item-data-row__request-type">post</div>
-              </div>
-              <div class="item-data-row__center">
-                <div class="item-data-row__endpoint">/accounts/get</div>
-                <div class="item-data-row__description">Retrieve high-level information about all accounts associated with an Item.</div>
-              </div>
-
-              <div class="item-data-row__right">
-                <button id="get-accounts-btn" class="button button--is-small button--is-default button--is-full-width">Send request</button>
-              </div>
-
-              <div class="item-data-row__response">
-                <table><tbody id="get-accounts-data"></tbody></table>
-              </div>
-            </div>
-          </div> -->
-
-
-        </div>
       </div>
     </div>
-  </main>
 
+
+    <div id="app" class="connected-view">
+
+      <!-- Card that displays transactions to be sorted as discretionary or recurring -->
+      <div class="row" id="set-transactions-card">
+        <div class="col s12 m12">
+          <div class="card teal lighten-2">
+            <div class="card-content white-text">
+              <span class="card-title">Excellent! Your budget has been set to <span id="budget-set"></span>!</span>
+              <p>Click the button below to load transactions from this month. Next, categorize these transactions as
+                either Discretionary or Recurring. Only Discretionary transactions will be tracked in your budget.</p>
+            </div>
+            <div class="card-action">
+              <button id="get-transactions-btn" class="waves-effect waves-light btn">Get Transactions</button>
+              <table>
+                <tbody id="get-transactions-data"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Card to set you budget -->
+      <div class="row" id="set-budget-card">
+        <div class="col s12 m12">
+          <div class="card teal lighten-2">
+            <div class="card-content white-text">
+              <span class="card-title">Your Budget</span>
+              <p>Use the slider to create your budget. Estimate your monthly amount of discretionary spending.</p>
+              <br>
+              <form action="#">
+                <p class="range-field">
+                  <input type="range" id="budget-amount" min="25" max="1000" />
+                </p>
+              </form>
+            </div>
+            <div class="card-action">
+              <button id="submit-budget" class="waves-effect waves-light btn">Submit</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+
+    </div>
+
+  </div>
+
+
+  <!-- Start inline Javscript -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
@@ -303,111 +160,111 @@
         handler.open();
       });
 
-      $('#get-accounts-btn').on('click', function (e) {
-        $.get('/accounts', function (data) {
-          $('#get-accounts-data').slideUp(function () {
-            var html = '<tr><td><strong>Name</strong></td><td><strong>Balances</strong></td><td><strong>Subtype</strong></td><td><strong>Mask</strong></td></tr>';
-            data.accounts.accounts.forEach(function (account, idx) {
-              html += '<tr>';
-              html += '<td>' + account.name + '</td>';
-              html += '<td>$' + (account.balances.available != null ? account.balances.available : account.balances.current) + '</td>';
-              html += '<td>' + account.subtype + '</td>';
-              html += '<td>' + account.mask + '</td>';
-              html += '</tr>';
-            });
+      // $('#get-accounts-btn').on('click', function (e) {
+      //   $.get('/accounts', function (data) {
+      //     $('#get-accounts-data').slideUp(function () {
+      //       var html = '<tr><td><strong>Name</strong></td><td><strong>Balances</strong></td><td><strong>Subtype</strong></td><td><strong>Mask</strong></td></tr>';
+      //       data.accounts.accounts.forEach(function (account, idx) {
+      //         html += '<tr>';
+      //         html += '<td>' + account.name + '</td>';
+      //         html += '<td>$' + (account.balances.available != null ? account.balances.available : account.balances.current) + '</td>';
+      //         html += '<td>' + account.subtype + '</td>';
+      //         html += '<td>' + account.mask + '</td>';
+      //         html += '</tr>';
+      //       });
 
-            $(this).html(html).slideDown();
-          });
-        });
-      });
+      //       $(this).html(html).slideDown();
+      //     });
+      //   });
+      // });
 
-      $('#get-auth-btn').on('click', function (e) {
-        $.get('/auth', function (data) {
-          $('#get-auth-data').slideUp(function () {
-            var authData = data.auth;
-            var isAch = authData.numbers.ach.length > 0;
-            var routingLabel = isAch ? 'Routing #' : 'Institution and Branch #';
+      // $('#get-auth-btn').on('click', function (e) {
+      //   $.get('/auth', function (data) {
+      //     $('#get-auth-data').slideUp(function () {
+      //       var authData = data.auth;
+      //       var isAch = authData.numbers.ach.length > 0;
+      //       var routingLabel = isAch ? 'Routing #' : 'Institution and Branch #';
 
-            var html = '<tr><td><strong>Name</strong></td><td><strong>Balance</strong></td><td><strong>Account #</strong></td><td><strong>' + routingLabel + '</strong></td></tr>';
-            if (isAch) {
-              authData.numbers.ach.forEach(function (achNumbers, idx) {
-                // Find the account associated with this set of account and routing numbers
-                var account = authData.accounts.filter(function (a) {
-                  return a.account_id == achNumbers.account_id;
-                })[0];
-                html += '<tr>';
-                html += '<td>' + account.name + '</td>';
-                html += '<td>$' + (account.balances.available != null ? account.balances.available : account.balances.current) + '</td>';
-                html += '<td>' + achNumbers.account + '</td>';
-                html += '<td>' + achNumbers.routing + '</td>';
-                html += '</tr>';
-              });
-            } else {
-              authData.numbers.eft.forEach(function (eftNumber, idx) {
-                // Find the account associated with this set of account and routing numbers
-                var account = authData.accounts.filter(function (a) {
-                  return a.account_id == eftNumber.account_id;
-                })[0];
-                html += '<tr>';
-                html += '<td>' + account.name + '</td>';
-                html += '<td>$' + (account.balances.available != null ? account.balances.available : account.balances.current) + '</td>';
-                html += '<td>' + eftNumber.account + '</td>';
-                html += '<td>' + eftNumber.institution + ' ' + eftNumber.branch + '</td>';
-                html += '</tr>';
-              });
-            }
-            $(this).html(html).slideDown();
-          });
-        });
-      });
+      //       var html = '<tr><td><strong>Name</strong></td><td><strong>Balance</strong></td><td><strong>Account #</strong></td><td><strong>' + routingLabel + '</strong></td></tr>';
+      //       if (isAch) {
+      //         authData.numbers.ach.forEach(function (achNumbers, idx) {
+      //           // Find the account associated with this set of account and routing numbers
+      //           var account = authData.accounts.filter(function (a) {
+      //             return a.account_id == achNumbers.account_id;
+      //           })[0];
+      //           html += '<tr>';
+      //           html += '<td>' + account.name + '</td>';
+      //           html += '<td>$' + (account.balances.available != null ? account.balances.available : account.balances.current) + '</td>';
+      //           html += '<td>' + achNumbers.account + '</td>';
+      //           html += '<td>' + achNumbers.routing + '</td>';
+      //           html += '</tr>';
+      //         });
+      //       } else {
+      //         authData.numbers.eft.forEach(function (eftNumber, idx) {
+      //           // Find the account associated with this set of account and routing numbers
+      //           var account = authData.accounts.filter(function (a) {
+      //             return a.account_id == eftNumber.account_id;
+      //           })[0];
+      //           html += '<tr>';
+      //           html += '<td>' + account.name + '</td>';
+      //           html += '<td>$' + (account.balances.available != null ? account.balances.available : account.balances.current) + '</td>';
+      //           html += '<td>' + eftNumber.account + '</td>';
+      //           html += '<td>' + eftNumber.institution + ' ' + eftNumber.branch + '</td>';
+      //           html += '</tr>';
+      //         });
+      //       }
+      //       $(this).html(html).slideDown();
+      //     });
+      //   });
+      // });
 
-      $('#get-identity-btn').on('click', function (e) {
-        $.get('/identity', function (data) {
-          $('#get-identity-data').slideUp(function () {
-            var identityData = data.identity.identity;
-            var html = '<tr class="response-row response-row--is-identity"><td><strong>Names</strong></td><td><strong>Emails</strong></td><td><strong>Phone numbers</strong></td><td><strong>Addresses</strong></td></tr><tr class="response-row response-row--is-identity">';
-            html += '<td>';
-            identityData.names.forEach(function (name, idx) {
-              html += name + '<br />';
-            });
-            html += '</td><td>';
-            identityData.emails.forEach(function (email, idx) {
-              html += email.data + '<br />';
-            });
-            html += '</td><td>';
-            identityData.phone_numbers.forEach(function (number, idx) {
-              html += number.data + '<br />';
-            });
-            html += '</td><td>';
-            identityData.addresses.forEach(function (address, idx) {
-              html += address.data.street + '<br />';
-              html += address.data.city + ', ' + address.data.state + ' ' + address.data.zip;
-            });
-            html += '</td></tr>';
+      // $('#get-identity-btn').on('click', function (e) {
+      //   $.get('/identity', function (data) {
+      //     $('#get-identity-data').slideUp(function () {
+      //       var identityData = data.identity.identity;
+      //       var html = '<tr class="response-row response-row--is-identity"><td><strong>Names</strong></td><td><strong>Emails</strong></td><td><strong>Phone numbers</strong></td><td><strong>Addresses</strong></td></tr><tr class="response-row response-row--is-identity">';
+      //       html += '<td>';
+      //       identityData.names.forEach(function (name, idx) {
+      //         html += name + '<br />';
+      //       });
+      //       html += '</td><td>';
+      //       identityData.emails.forEach(function (email, idx) {
+      //         html += email.data + '<br />';
+      //       });
+      //       html += '</td><td>';
+      //       identityData.phone_numbers.forEach(function (number, idx) {
+      //         html += number.data + '<br />';
+      //       });
+      //       html += '</td><td>';
+      //       identityData.addresses.forEach(function (address, idx) {
+      //         html += address.data.street + '<br />';
+      //         html += address.data.city + ', ' + address.data.state + ' ' + address.data.zip;
+      //       });
+      //       html += '</td></tr>';
 
-            $(this).html(html).slideDown();
-          });
-        });
-      });
+      //       $(this).html(html).slideDown();
+      //     });
+      //   });
+      // });
 
-      $('#get-item-btn').on('click', function (e) {
-        $.get('/item', function (data) {
-          $('#get-item-data').slideUp(function () {
-            if (data.error)
-              $(this).html('<p>' + data.error + '</p>').slideDown();
-            else {
-              console.log(data);
-              var html = '';
-              html += '<tr><td>Institution name</td><td>' + data.institution.name + '</td></tr>';
-              html += '<tr><td>Billed products</td><td>' + data.item.billed_products.join(', ') + '</td></tr>';
-              html += '<tr><td>Item ID</td><td>' + data.item.item_id + '</td></tr>';
-              html += '<tr><td>Available products</td><td>' + data.item.available_products.join(', ') + '</td></tr>';
+      // $('#get-item-btn').on('click', function (e) {
+      //   $.get('/item', function (data) {
+      //     $('#get-item-data').slideUp(function () {
+      //       if (data.error)
+      //         $(this).html('<p>' + data.error + '</p>').slideDown();
+      //       else {
+      //         console.log(data);
+      //         var html = '';
+      //         html += '<tr><td>Institution name</td><td>' + data.institution.name + '</td></tr>';
+      //         html += '<tr><td>Billed products</td><td>' + data.item.billed_products.join(', ') + '</td></tr>';
+      //         html += '<tr><td>Item ID</td><td>' + data.item.item_id + '</td></tr>';
+      //         html += '<tr><td>Available products</td><td>' + data.item.available_products.join(', ') + '</td></tr>';
 
-              $(this).html(html).slideDown();
-            }
-          });
-        });
-      });
+      //         $(this).html(html).slideDown();
+      //       }
+      //     });
+      //   });
+      // });
 
       $('#get-transactions-btn').on('click', function (e) {
         $.get('/transactions', function (data) {
@@ -434,12 +291,13 @@
           } else {
             console.log(data.transactions.transactions);
             $('#get-transactions-data').slideUp(function () {
-              var html = '<tr><td><strong>Name</strong></td><td><strong>Amount</strong></td><td><strong>Date</strong></td></tr>';
+              var html = '<tr><td><strong>Name</strong></td><td><strong>Amount</strong></td><td><strong>Date</strong></td><td><strong>Category</strong></td></tr>';
               data.transactions.transactions.forEach(function (txn, idx) {
                 html += '<tr>';
                 html += '<td>' + txn.name + '</td>';
                 html += '<td>$' + txn.amount + '</td>';
                 html += '<td>' + txn.date + '</td>';
+                html += '<td>' + '<button>Hello</button>' + '</td>';
                 html += '</tr>';
               });
 
@@ -451,56 +309,56 @@
         });
       });
 
-      $('#get-balance-btn').on('click', function (e) {
-        $.get('/balance', function (data) {
-          $('#get-balance-data').slideUp(function () {
-            var balanceData = data.balance;
-            var html = '<tr><td><strong>Name</strong></td><td><strong>Balance</strong></td><td><strong>Subtype</strong></td><td><strong>Mask</strong></td></tr>';
-            balanceData.accounts.forEach(function (account, idx) {
-              html += '<tr>';
-              html += '<td>' + account.name + '</td>';
-              html += '<td>$' + (account.balances.available != null ? account.balances.available : account.balances.current) + '</td>'
-              html += '<td>' + account.subtype + '</td>';
-              html += '<td>' + account.mask + '</td>';
-              html += '</tr>';
-            });
+      // $('#get-balance-btn').on('click', function (e) {
+      //   $.get('/balance', function (data) {
+      //     $('#get-balance-data').slideUp(function () {
+      //       var balanceData = data.balance;
+      //       var html = '<tr><td><strong>Name</strong></td><td><strong>Balance</strong></td><td><strong>Subtype</strong></td><td><strong>Mask</strong></td></tr>';
+      //       balanceData.accounts.forEach(function (account, idx) {
+      //         html += '<tr>';
+      //         html += '<td>' + account.name + '</td>';
+      //         html += '<td>$' + (account.balances.available != null ? account.balances.available : account.balances.current) + '</td>'
+      //         html += '<td>' + account.subtype + '</td>';
+      //         html += '<td>' + account.mask + '</td>';
+      //         html += '</tr>';
+      //       });
 
-            $(this).html(html).slideDown();
-          });
-        });
-      });
+      //       $(this).html(html).slideDown();
+      //     });
+      //   });
+      // });
 
-      $('#get-assets-btn').on('click', function (e) {
-        $.get('/assets', function (data) {
-          $('#get-assets-data').slideUp(function () {
-            var reportData = data.json;
-            var html = `
-          <tr>
-            <td><strong>Account</strong></td>
-            <td><strong>Balance</strong></td>
-            <td><strong># Transactions</strong></td>
-            <td><strong># Days Available</strong></td>
-          </tr>`;
-            reportData.items.forEach(function (item, itemIdx) {
-              item.accounts.forEach(function (account, accountIdx) {
-                html += '<tr>';
-                html += '<td>' + account.name + '</td>';
-                html += '<td>$' + account.balances.current + '</td>'
-                html += '<td>' + account.transactions.length + '</td>';
-                html += '<td>' + account.days_available + '</td>';
-                html += '</tr>';
-              });
-            });
+      // $('#get-assets-btn').on('click', function (e) {
+      //   $.get('/assets', function (data) {
+      //     $('#get-assets-data').slideUp(function () {
+      //       var reportData = data.json;
+      //       var html = `
+      //     <tr>
+      //       <td><strong>Account</strong></td>
+      //       <td><strong>Balance</strong></td>
+      //       <td><strong># Transactions</strong></td>
+      //       <td><strong># Days Available</strong></td>
+      //     </tr>`;
+      //       reportData.items.forEach(function (item, itemIdx) {
+      //         item.accounts.forEach(function (account, accountIdx) {
+      //           html += '<tr>';
+      //           html += '<td>' + account.name + '</td>';
+      //           html += '<td>$' + account.balances.current + '</td>'
+      //           html += '<td>' + account.transactions.length + '</td>';
+      //           html += '<td>' + account.days_available + '</td>';
+      //           html += '</tr>';
+      //         });
+      //       });
 
-            $('#download-assets-pdf-btn')
-              .attr('href', `data:application/pdf;base64,${data.pdf}`)
-              .attr('download', 'Asset Report.pdf')
-              .show();
+      //       $('#download-assets-pdf-btn')
+      //         .attr('href', `data:application/pdf;base64,${data.pdf}`)
+      //         .attr('download', 'Asset Report.pdf')
+      //         .show();
 
-            $(this).html(html).slideDown();
-          });
-        });
-      });
+      //       $(this).html(html).slideDown();
+      //     });
+      //   });
+      // });
     })(jQuery);
 
     function qs(key) {
@@ -509,11 +367,12 @@
       return match && decodeURIComponent(match[1].replace(/\+/g, " "));
     }
 
-    $('#submit-budget').on('click', function(){
+    $('#submit-budget').on('click', function () {
       var budget = $('#budget-amount').val();
       console.log(budget);
       $('#set-budget-card').fadeOut();
-      $('#budget-set').text(budget);
+      $('#budget-set').text("$" + budget);
+      $('#set-transactions-card').fadeIn();
 
     });
   </script>

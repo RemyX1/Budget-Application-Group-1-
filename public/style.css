@@ -204,3 +204,19 @@ Hide things
 #steps {
   display: none;
 }
+
+#set-transactions-card{
+  display: none;
+}
+
+#budget-set {
+  font-weight: 500;
+}
+
+#get-transactions-data{
+  color: white;
+}
+
+.container{
+  margin-top: 10px;
+}
