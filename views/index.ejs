@@ -2,8 +2,11 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Plaid Quickstart Example</title>
-<link rel="stylesheet" href="https://threads.plaid.com/threads.css">
+<title>Plaid Transaction</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<!-- <link rel="stylesheet" href="https://threads.plaid.com/threads.css"> -->
+
 
 <link rel="stylesheet" type="text/css" href="style.css">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -13,39 +16,25 @@
     <div class="grid">
       <div class="grid__column grid__column--is-twelve-columns">
         <div id="banner" class="everpresent-content">
-          <h1 class="everpresent-content__heading">Plaid Quickstart</h1>
+          <h1 class="everpresent-content__heading">Welcome to Pail!</h1>
           <p id="intro" class="everpresent-content__subheading">
-            An example application that outlines an end-to-end integration with Plaid
+            Connect your bank account to get the most out of Pail.
           </p>
           <p id="steps" class="everpresent-content__subheading">
-           Success! You just created an Item by linking your account.
+           Success! You linked your account.
           </p>
         </div>
 
         <div id="container" class="initial-view">
           <p class="initial-view__description">
-            Click the button below to open a list of Institutions. After you select one, you’ll be guided through an authentication process. Upon completion, a public_token will be passed back to the server and exchanged for access_token.
+            Click the button below to open a list of Institutions. Select your bank and the accounts you would like to link.
           </p>
 
-          <button id="link-btn" class="button button--is-primary">Connect with Plaid</button>
+          <button id="link-btn" class="waves-effect waves-light btn"><i class="material-icons right">attach_money</i>Connect Your Account</button>
         </div>
 
         <div id="app" class="connected-view">
-          <div class="item-overview">
-            <div class="item-overview__column">
-              <h3 class="item-overview__heading">item_id</h3>
-              <p class="item-overview__id" id="item_id">san.asjsansakjsakjasjksajkas</p>
-            </div>
-            <div class="item-overview__column">
-              <h3 class="item-overview__heading">access_token</h3>
-              <p class="item-overview__id" id="access_token">••••••••hsakjsl</p>
-            </div>
-
-            <div style="clear: both"></div>
-          </div>
-
-          <p>Now that you have an access_token you can make all of the following API requests:</p>
-
+          
           <div class="box">
             <h3 class="box__heading">Products</h3>
 
@@ -60,7 +49,7 @@
                 <div class="item-data-row__description">Retrieve account and routing numbers for checking and savings accounts.</div>
               </div>
               <div class="item-data-row__right">
-                <button id="get-auth-btn" class="button button--is-small button--is-default button--is-full-width">Send request</button>
+                <button id="get-auth-btn" class="waves-effect waves-light btn">Send request</button>
               </div>
               <div class="item-data-row__response">
                 <table><tbody id="get-auth-data"></tbody></table>
@@ -78,7 +67,7 @@
                 <div class="item-data-row__description">Retrieve transactions for credit and depository accounts.</div>
               </div>
               <div class="item-data-row__right">
-                <button id="get-transactions-btn" class="button button--is-small button--is-default button--is-full-width">Send request</button>
+                <button id="get-transactions-btn" class="waves-effect waves-light btn">Send request</button>
               </div>
               <div class="item-data-row__response">
                 <table><tbody id="get-transactions-data"></tbody></table>
@@ -96,7 +85,7 @@
                 <div class="item-data-row__description">Retrieve Identity information on file with the bank. Reduce fraud by comparing user-submitted data to validate identity.</div>
               </div>
               <div class="item-data-row__right">
-                <button id="get-identity-btn" class="button button--is-small button--is-default button--is-full-width">Send request</button>
+                <button id="get-identity-btn" class="waves-effect waves-light btn">Send request</button>
               </div>
               <div class="item-data-row__response">
                 <table><tbody id="get-identity-data"></tbody></table>
@@ -114,7 +103,7 @@
                 <div class="item-data-row__description">Check balances in real time to prevent non-sufficient funds fees.</div>
               </div>
               <div class="item-data-row__right">
-                <button id="get-balance-btn" class="button button--is-small button--is-default button--is-full-width">Send request</button>
+                <button id="get-balance-btn" class="waves-effect waves-light btn">Send request</button>
               </div>
               <div class="item-data-row__response">
                 <table><tbody id="get-balance-data"></tbody></table>
@@ -133,7 +122,7 @@
               </div>
 
               <div class="item-data-row__right">
-                <button id="get-assets-btn" class="button button--is-small button--is-default button--is-full-width">Send request</button>
+                <button id="get-assets-btn" class="waves-effect waves-light btn">Send request</button>
 
                 <a id="download-assets-pdf-btn" class="button button--is-small button--is-primary button--is-full-width" style="display: none; margin: 10px 0px;";>Download as PDF</a>
               </div>
@@ -145,7 +134,7 @@
 
           </div>
 
-          <div class="box">
+          <!-- <div class="box">
             <h3 class="box__heading">Item management</h3>
 
             <div class="item-data-row">
@@ -183,13 +172,16 @@
                 <table><tbody id="get-accounts-data"></tbody></table>
               </div>
             </div>
-          </div>
+          </div> -->
+
+
         </div>
       </div>
     </div>
   </main>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
   <script>
   (function($) {
