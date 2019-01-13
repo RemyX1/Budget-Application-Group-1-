@@ -218,5 +218,9 @@ Hide things
 }
 
 .container{
+  margin-top: 15px;
+}
+
+#submit-tran-btn{
   margin-top: 10px;
 }

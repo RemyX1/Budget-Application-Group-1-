@@ -18,7 +18,7 @@
     <div class="grid">
       <div class="grid__column grid__column--is-twelve-columns">
         <div id="banner" class="everpresent-content">
-          <img src="/assets/Pail_Logo.png" width="150" height="auto">
+          <img src="/assets/Pail_Logo.png" width="100" height="auto">
           <p id="intro" class="everpresent-content__subheading">
             Welcome to Pail! Connect your bank account to get the most out of Pail.
           </p>
@@ -47,11 +47,12 @@
         <div class="col s12 m12">
           <div class="card teal lighten-2">
             <div class="card-content white-text">
-              <span class="card-title">Excellent! Your budget has been set to <span id="budget-set"></span>!</span>
-              <p>Click the button below to load transactions from this month. Next, categorize these transactions as
-                either Discretionary or Recurring. Only Discretionary transactions will be tracked in your budget.</p>
+              <span class="card-title">Excellent! Your monthly budget has been set to <span id="budget-set"></span>!</span>
+              <p>Click the button below to load transactions from this month. Next, select transactions that
+                should be included in the Discretionary budget. Only Discretionary transactions will be tracked in your
+                budget.</p>
             </div>
-            <div class="card-action">
+            <div id="card-action" class="card-action">
               <button id="get-transactions-btn" class="waves-effect waves-light btn">Get Transactions</button>
               <table>
                 <tbody id="get-transactions-data"></tbody>
@@ -72,7 +73,7 @@
               <br>
               <form action="#">
                 <p class="range-field">
-                  <input type="range" id="budget-amount" min="25" max="1000" />
+                  <input type="range" id="budget-amount" min="25" max="3000" />
                 </p>
               </form>
             </div>
@@ -96,6 +97,13 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
   <script>
+    // GLOBAL VARS
+    var budget = 0;
+    var spentMoney = 0;
+    var spendCats =[];
+    var transObj = {};
+
+
     (function ($) {
       var products = '<%= PLAID_PRODUCTS %>'.split(',');
       if (products.includes('assets')) {
@@ -269,17 +277,25 @@
               });
             });
           } else {
-            console.log(data.transactions.transactions);
+            transObj = data.transactions.transactions
+            console.log(transObj);
+            $('#get-transactions-btn').fadeOut();
             $('#get-transactions-data').slideUp(function () {
-              var html = '<tr><td><strong>Name</strong></td><td><strong>Amount</strong></td><td><strong>Date</strong></td><td><strong>Category</strong></td></tr>';
+              var i = 0;
+              var html = '<tr><td><strong>Name</strong></td><td><strong>Amount</strong></td><td><strong>Date</strong></td><td><strong>Include in Budget?</strong></td></tr>';
               data.transactions.transactions.forEach(function (txn, idx) {
                 html += '<tr>';
                 html += '<td>' + txn.name + '</td>';
                 html += '<td>$' + txn.amount + '</td>';
                 html += '<td>' + txn.date + '</td>';
-                html += '<td>' + '<button>Hello</button>' + '</td>';
+                html += '<td>' + "<button data-num=" + i + " data-txn=" + txn.amount + " id='include-btn' class='waves-effect waves-light btn teal darken-3'>Include</button>" + '</td>';
                 html += '</tr>';
+                i++;
               });
+              var button = $('<button>').text("Complete");
+              button.attr("class", "waves-effect waves-light btn teal darken-3");
+              button.attr("id", "submit-tran-btn");
+              $("#card-action").append(button);
 
               $(this).slideUp(function () {
                 $(this).html(html).slideDown();
@@ -288,6 +304,9 @@
           }
         });
       });
+
+
+
 
       // $('#get-balance-btn').on('click', function (e) {
       //   $.get('/balance', function (data) {
@@ -348,13 +367,27 @@
     }
 
     $('#submit-budget').on('click', function () {
-      var budget = $('#budget-amount').val();
+      budget = parseInt($('#budget-amount').val());
       console.log(budget);
       $('#set-budget-card').fadeOut();
       $('#budget-set').text("$" + budget);
       $('#set-transactions-card').fadeIn();
-
     });
+
+    $(document).on("click", "#include-btn", function () {
+      spentMoney = spentMoney + parseInt($(this).attr("data-txn"));
+      console.log(spentMoney);
+
+      var newCats = transObj[$(this).attr('data-num')].category;
+      // console.log(newCats);
+
+      spendCats = (spendCats.concat(newCats));
+      console.log(spendCats);
+      
+
+      $(this).closest('tr').fadeOut();
+    });
+
   </script>
 </body>
 
