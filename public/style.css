@@ -224,3 +224,17 @@ Hide things
 #submit-tran-btn{
   margin-top: 10px;
 }
+
+#budget-card{
+  display: none;
+}
+
+#money-text{
+      font-size: xx-large;
+    opacity: .6;
+}
+
+#remaining-text{
+  font-size: xx-large;
+  z-index: 1200;
+}

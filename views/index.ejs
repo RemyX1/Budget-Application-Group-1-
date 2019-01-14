@@ -43,7 +43,7 @@
     <div id="app" class="connected-view">
 
       <!-- Card that displays budget -->
-      <div class="row">
+      <div class="row" id="budget-card">
         <div class="col s12 m12">
           <div class="card teal lighten-2">
             <div class="card-content white-text">
@@ -113,7 +113,7 @@
     // GLOBAL VARS
     var budget = 0;
     var spentMoney = 0;
-    var spendCats =[];
+    var spendCats = [];
     var transObj = {};
 
 
@@ -398,15 +398,40 @@
 
       spendCats = (spendCats.concat(newCats));
       console.log(spendCats);
-      
+
 
       $(this).closest('tr').fadeOut();
     });
 
     // Shows budget card on click.
-    $(document).on('click', '#submit-tran-btn', function(){
+    $(document).on('click', '#submit-tran-btn', function () {
       $("#steps").fadeOut();
       $("#set-transactions-card").fadeOut();
+      $("#budget-card").fadeIn();
+
+      var budgetGraph = $('<div>');
+      budgetGraph.attr("id", "budget-grapgh");
+      budgetGraph.attr("class", "center-align teal darken-3");
+      budgetGraph.height(400);
+      $('#budget-card-body').append(budgetGraph);
+
+      var budgetSpent = $('<div>');
+      budgetSpent.attr('id', 'budget-remaining');
+      budgetSpent.attr("class", "center-align teal darken-1");
+      var height = spentMoney / budget * 400;
+      budgetSpent.height(height);
+      
+      budgetSpent.append($("<p id= 'money-text'>").text('($' + spentMoney + ')'));
+
+      budgetGraph.append(budgetSpent);
+      
+      var remainingMoney = budget - spentMoney
+      budgetGraph.append($("<p id= 'remaining-text'>").text('$' + remainingMoney));
+
+      
+
+
+
 
     });
 
