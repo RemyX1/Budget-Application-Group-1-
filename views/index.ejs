@@ -49,7 +49,7 @@
             <div class="card-content white-text">
               <span class="card-title">Your Monthly Budget</span>
               <span id="budget-card-body"></span>
-              <div class="card-action"></div>
+              <div id="budget-details" class="card-action"></div>
             </div>
           </div>
         </div>
@@ -410,7 +410,7 @@
       $("#budget-card").fadeIn();
 
       var budgetGraph = $('<div>');
-      budgetGraph.attr("id", "budget-grapgh");
+      budgetGraph.attr("id", "budget-graph");
       budgetGraph.attr("class", "center-align teal darken-3");
       budgetGraph.height(400);
       $('#budget-card-body').append(budgetGraph);
@@ -420,15 +420,17 @@
       budgetSpent.attr("class", "center-align teal darken-1");
       var height = spentMoney / budget * 400;
       budgetSpent.height(height);
-      
-      budgetSpent.append($("<p id= 'money-text'>").text('($' + spentMoney + ')'));
+
+      if (spentMoney > 0) {
+        budgetSpent.append($("<p id= 'money-text'>").text('($' + spentMoney + ')'));
+      }
 
       budgetGraph.append(budgetSpent);
-      
+
       var remainingMoney = budget - spentMoney
       budgetGraph.append($("<p id= 'remaining-text'>").text('$' + remainingMoney));
 
-      
+      $('#budget-details').text("You have spent $"+ spentMoney + " so far this month, and have $"+ remainingMoney+" left in you budget.")
 
 
 

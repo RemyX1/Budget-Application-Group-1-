@@ -238,3 +238,11 @@ Hide things
   font-size: xx-large;
   z-index: 1200;
 }
+
+#budget-graph{
+  border-radius: 60px;
+}
+
+#budget-remaining{
+  border-radius: 60px 60px 0px 0px;
+}
