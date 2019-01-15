@@ -53,6 +53,7 @@ app.get('/', function (request, response, next) {
   });
 });
 
+
 app.get('/index', function (request, response, next) {
   response.render('index.ejs', {
     PLAID_PUBLIC_KEY: PLAID_PUBLIC_KEY,
