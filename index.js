@@ -21,6 +21,8 @@ var PLAID_PRODUCTS = envvar.string('PLAID_PRODUCTS', 'transactions');
 
 // We store the access_token in memory - in production, store it in a secure
 // persistent data store
+
+// Store these in firebase!!!
 var ACCESS_TOKEN = null;
 var PUBLIC_TOKEN = null;
 var ITEM_ID = null;
