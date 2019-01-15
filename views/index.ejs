@@ -420,7 +420,12 @@
       budgetSpent.attr('id', 'budget-remaining');
       budgetSpent.attr("class", "center-align teal darken-1");
 
-      var height = spentMoney / budget * 400;
+      if (spentMoney / budget * 400 < 400) {
+        var height = spentMoney / budget * 400;
+      } else {
+        var height = 400;
+      }
+      
       if (height < 54) {
         height = 53;
       } else {
@@ -429,6 +434,9 @@
 
       if (400 - height < 54) {
         budgetGraph.height(height + 53);
+      } else if (height >= 400) {
+        budgetGraph.height(400);
+
       } else {
         budgetGraph.height(400);
       }
