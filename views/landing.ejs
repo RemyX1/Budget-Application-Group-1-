@@ -5,8 +5,62 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <!-- Firebase Inclusion -->
+    <script src="https://www.gstatic.com/firebasejs/5.7.2/firebase-app.js"></script>
+    <!-- Firebase services added: authentication, database -->
+    <script src="https://www.gstatic.com/firebasejs/5.7.2/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.7.2/firebase-database.js"></script>
+    <script src="https://cdn.firebase.com/libs/firebaseui/3.1.1/firebaseui.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.1.1/firebaseui.css" />
+    <!-- Initialize Firebase -->
+    <script>
+        var config = {
+        apiKey: "AIzaSyBiqwDiXaTG3-qqRjrMybgdXMikDP6tmSk",
+        authDomain: "gt-coding-project-1.firebaseapp.com",
+        databaseURL: "https://gt-coding-project-1.firebaseio.com",
+        projectId: "gt-coding-project-1",
+        storageBucket: "gt-coding-project-1.appspot.com",
+        messagingSenderId: "705133084492"
+        };
+        firebase.initializeApp(config);
+
+    // Initialize the FirebaseUI Widget using Firebase.
+    var ui = new firebaseui.auth.AuthUI(firebase.auth());
+        // Config for firebase auth UI
+        var uiConfig = {
+            callbacks: {
+                signInSuccessWithAuthResult: function(authResult, redirectUrl) {
+                // User successfully signed in.
+                // Return type determines whether we continue the redirect automatically
+                // or whether we leave that to developer to handle.
+                return true;
+                },
+                uiShown: function() {
+                // The widget is rendered.
+                // Hide the loader.
+                document.getElementById('loader').style.display = 'none';
+                }
+            },
+            // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
+            signInFlow: 'popup',
+            signInSuccessUrl: '/index',
+            signInOptions: [
+                // Leave the lines as is for the providers you want to offer your users.
+                firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+                firebase.auth.EmailAuthProvider.PROVIDER_ID,
+            ],
+            // Terms of service url.
+            tosUrl: '#',
+            // Privacy policy url.
+            privacyPolicyUrl: '#'
+        };
+        
+    </script>
+
     <link rel="stylesheet" type="text/css" href="/landing.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
 
 
     <title>Plaid</title>
@@ -43,20 +97,21 @@
 
     </main>
         <footer class="page-footer teal wrapper">
-                <div class="container">
-                  <div class="row">
+            <div class="container">
+                <div class="row">
                     <div>
-                      <h5 class="white-text">Footer Content</h5>
+                        <h5 class="white-text">Footer Content</h5>
                     </div>
-                  </div>
                 </div>
                 <div class="footer-copyright">
                   <div class="container">
                   © 2019 Copyright Text
                   </div>
+
                 </div>
+            </div>
         </footer>
-                  
+
 
     
 
@@ -65,8 +120,19 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script>
         $('#loginButton').on('click', function () {
-        window.location = '/index';
+            window.location = '/index';
         });
+
+        // The start method will wait until the DOM is loaded.
+        ui.start('#firebaseui-auth-container', {
+            signInOptions: [
+                firebase.auth.EmailAuthProvider.PROVIDER_ID,
+                firebase.auth.GoogleAuthProvider.PROVIDER_ID
+            ],
+            // Other config options...
+        });
+        ui.start('#firebaseui-auth-container', uiConfig);
+
     </script>
 
 </body>
