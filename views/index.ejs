@@ -241,6 +241,7 @@
     var spentMoney = 0;
     var spendCats = [];
     var transObj = {};
+    var key;
 
 
     (function ($) {
@@ -290,111 +291,7 @@
         handler.open();
       });
 
-      // $('#get-accounts-btn').on('click', function (e) {
-      //   $.get('/accounts', function (data) {
-      //     $('#get-accounts-data').slideUp(function () {
-      //       var html = '<tr><td><strong>Name</strong></td><td><strong>Balances</strong></td><td><strong>Subtype</strong></td><td><strong>Mask</strong></td></tr>';
-      //       data.accounts.accounts.forEach(function (account, idx) {
-      //         html += '<tr>';
-      //         html += '<td>' + account.name + '</td>';
-      //         html += '<td>$' + (account.balances.available != null ? account.balances.available : account.balances.current) + '</td>';
-      //         html += '<td>' + account.subtype + '</td>';
-      //         html += '<td>' + account.mask + '</td>';
-      //         html += '</tr>';
-      //       });
-
-      //       $(this).html(html).slideDown();
-      //     });
-      //   });
-      // });
-
-      // $('#get-auth-btn').on('click', function (e) {
-      //   $.get('/auth', function (data) {
-      //     $('#get-auth-data').slideUp(function () {
-      //       var authData = data.auth;
-      //       var isAch = authData.numbers.ach.length > 0;
-      //       var routingLabel = isAch ? 'Routing #' : 'Institution and Branch #';
-
-      //       var html = '<tr><td><strong>Name</strong></td><td><strong>Balance</strong></td><td><strong>Account #</strong></td><td><strong>' + routingLabel + '</strong></td></tr>';
-      //       if (isAch) {
-      //         authData.numbers.ach.forEach(function (achNumbers, idx) {
-      //           // Find the account associated with this set of account and routing numbers
-      //           var account = authData.accounts.filter(function (a) {
-      //             return a.account_id == achNumbers.account_id;
-      //           })[0];
-      //           html += '<tr>';
-      //           html += '<td>' + account.name + '</td>';
-      //           html += '<td>$' + (account.balances.available != null ? account.balances.available : account.balances.current) + '</td>';
-      //           html += '<td>' + achNumbers.account + '</td>';
-      //           html += '<td>' + achNumbers.routing + '</td>';
-      //           html += '</tr>';
-      //         });
-      //       } else {
-      //         authData.numbers.eft.forEach(function (eftNumber, idx) {
-      //           // Find the account associated with this set of account and routing numbers
-      //           var account = authData.accounts.filter(function (a) {
-      //             return a.account_id == eftNumber.account_id;
-      //           })[0];
-      //           html += '<tr>';
-      //           html += '<td>' + account.name + '</td>';
-      //           html += '<td>$' + (account.balances.available != null ? account.balances.available : account.balances.current) + '</td>';
-      //           html += '<td>' + eftNumber.account + '</td>';
-      //           html += '<td>' + eftNumber.institution + ' ' + eftNumber.branch + '</td>';
-      //           html += '</tr>';
-      //         });
-      //       }
-      //       $(this).html(html).slideDown();
-      //     });
-      //   });
-      // });
-
-      // $('#get-identity-btn').on('click', function (e) {
-      //   $.get('/identity', function (data) {
-      //     $('#get-identity-data').slideUp(function () {
-      //       var identityData = data.identity.identity;
-      //       var html = '<tr class="response-row response-row--is-identity"><td><strong>Names</strong></td><td><strong>Emails</strong></td><td><strong>Phone numbers</strong></td><td><strong>Addresses</strong></td></tr><tr class="response-row response-row--is-identity">';
-      //       html += '<td>';
-      //       identityData.names.forEach(function (name, idx) {
-      //         html += name + '<br />';
-      //       });
-      //       html += '</td><td>';
-      //       identityData.emails.forEach(function (email, idx) {
-      //         html += email.data + '<br />';
-      //       });
-      //       html += '</td><td>';
-      //       identityData.phone_numbers.forEach(function (number, idx) {
-      //         html += number.data + '<br />';
-      //       });
-      //       html += '</td><td>';
-      //       identityData.addresses.forEach(function (address, idx) {
-      //         html += address.data.street + '<br />';
-      //         html += address.data.city + ', ' + address.data.state + ' ' + address.data.zip;
-      //       });
-      //       html += '</td></tr>';
-
-      //       $(this).html(html).slideDown();
-      //     });
-      //   });
-      // });
-
-      // $('#get-item-btn').on('click', function (e) {
-      //   $.get('/item', function (data) {
-      //     $('#get-item-data').slideUp(function () {
-      //       if (data.error)
-      //         $(this).html('<p>' + data.error + '</p>').slideDown();
-      //       else {
-      //         console.log(data);
-      //         var html = '';
-      //         html += '<tr><td>Institution name</td><td>' + data.institution.name + '</td></tr>';
-      //         html += '<tr><td>Billed products</td><td>' + data.item.billed_products.join(', ') + '</td></tr>';
-      //         html += '<tr><td>Item ID</td><td>' + data.item.item_id + '</td></tr>';
-      //         html += '<tr><td>Available products</td><td>' + data.item.available_products.join(', ') + '</td></tr>';
-
-      //         $(this).html(html).slideDown();
-      //       }
-      //     });
-      //   });
-      // });
+     
 
       $('#get-transactions-btn').on('click', function (e) {
         $.get('/transactions', function (data) {
@@ -450,60 +347,6 @@
           }
         });
       });
-
-
-
-
-      // $('#get-balance-btn').on('click', function (e) {
-      //   $.get('/balance', function (data) {
-      //     $('#get-balance-data').slideUp(function () {
-      //       var balanceData = data.balance;
-      //       var html = '<tr><td><strong>Name</strong></td><td><strong>Balance</strong></td><td><strong>Subtype</strong></td><td><strong>Mask</strong></td></tr>';
-      //       balanceData.accounts.forEach(function (account, idx) {
-      //         html += '<tr>';
-      //         html += '<td>' + account.name + '</td>';
-      //         html += '<td>$' + (account.balances.available != null ? account.balances.available : account.balances.current) + '</td>'
-      //         html += '<td>' + account.subtype + '</td>';
-      //         html += '<td>' + account.mask + '</td>';
-      //         html += '</tr>';
-      //       });
-
-      //       $(this).html(html).slideDown();
-      //     });
-      //   });
-      // });
-
-      // $('#get-assets-btn').on('click', function (e) {
-      //   $.get('/assets', function (data) {
-      //     $('#get-assets-data').slideUp(function () {
-      //       var reportData = data.json;
-      //       var html = `
-      //     <tr>
-      //       <td><strong>Account</strong></td>
-      //       <td><strong>Balance</strong></td>
-      //       <td><strong># Transactions</strong></td>
-      //       <td><strong># Days Available</strong></td>
-      //     </tr>`;
-      //       reportData.items.forEach(function (item, itemIdx) {
-      //         item.accounts.forEach(function (account, accountIdx) {
-      //           html += '<tr>';
-      //           html += '<td>' + account.name + '</td>';
-      //           html += '<td>$' + account.balances.current + '</td>'
-      //           html += '<td>' + account.transactions.length + '</td>';
-      //           html += '<td>' + account.days_available + '</td>';
-      //           html += '</tr>';
-      //         });
-      //       });
-
-      //       $('#download-assets-pdf-btn')
-      //         .attr('href', `data:application/pdf;base64,${data.pdf}`)
-      //         .attr('download', 'Asset Report.pdf')
-      //         .show();
-
-      //       $(this).html(html).slideDown();
-      //     });
-      //   });
-      // });
     })(jQuery);
 
     function qs(key) {
@@ -521,13 +364,16 @@
       $('#set-transactions-card').fadeIn();
 
       if (uid && access_token && publicToken && item_id) {
-        $(".modal").hide();
         database.ref("/users/"+uid).push({
             "accessToken": access_token,
             "publicToken": publicToken,
             "itemID": item_id,
             "remaining": remainingMoney,
+            "spent": 0,
             "budget": budget
+        }).then((snap) => {
+          key = snap.key
+          console.log(key);
         });
       };
     });
@@ -536,6 +382,7 @@
     $(document).on("click", "#include-btn", function () {
       spentMoney = spentMoney + parseInt($(this).attr("data-txn"));
       console.log(spentMoney);
+      
 
       var newCats = transObj[$(this).attr('data-num')].category;
       // console.log(newCats);
@@ -577,6 +424,10 @@
       $("#steps").fadeOut();
       $("#set-transactions-card").fadeOut();
       $("#budget-card").fadeIn();
+
+      database.ref("users/" + uid + "/" + key).update({
+        "spent": spentMoney,
+      });
 
       var budgetGraph = $('<div>');
       budgetGraph.attr("id", "budget-graph");
@@ -629,6 +480,9 @@
     // firebase sign in success hides modal
     firebase.auth().onAuthStateChanged((user) => {
       // hide modal
+
+      $(".login-modal").hide();
+      $(".container").attr('style', "display:unset");
       uid = user.uid;
     });
   </script>
