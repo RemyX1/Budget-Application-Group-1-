@@ -204,6 +204,9 @@
           </div>
         </div>
       </div>
+      <div id="deals">
+        <!-- deals go here -->
+      </div>
 
 
 
@@ -389,7 +392,32 @@
 
 
       $(this).closest('tr').fadeOut();
+
+      // get coupons
+      spendCats.forEach(category => {
+      // Constructing a queryURL using the category
+      var queryURL = "https://api.discountapi.com/v2/deals?api_key=JunrcDyn&page=1&per_page=5&query="+category;
+      // Performing an AJAX request with the queryURL
+      $("#deals").empty();
+      $.ajax({
+        url: queryURL,
+        method: "GET"
+      }).then(res=>{
+          var catDeals = res.deals;
+          catDeals.forEach(dealObj => {
+            var dealInfo = dealObj.deal;
+            var dealTitle = dealInfo.short_title;
+            var dealLink = dealInfo.url;
+            var dealDiv = $("<div>");
+            dealDiv.append("<a href="+dealLink+"<h3>"+dealTitle+"</h3></a>");
+            $("#deals").append(dealDiv);
+          });
+        })
     });
+      });
+
+
+
 
     // Shows budget card on click.
     $(document).on('click', '#submit-tran-btn', function () {
