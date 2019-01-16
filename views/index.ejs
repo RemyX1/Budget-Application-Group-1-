@@ -14,17 +14,63 @@
   <script src="https://www.gstatic.com/firebasejs/5.7.2/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/5.7.2/firebase-database.js"></script>
   <!-- Initialize Firebase -->
+  <!-- Firebase Inclusion -->
+  <script src="https://www.gstatic.com/firebasejs/5.7.2/firebase-app.js"></script>
+  <!-- Firebase services added: authentication, database -->
+  <script src="https://www.gstatic.com/firebasejs/5.7.2/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.7.2/firebase-database.js"></script>
+  <script src="https://cdn.firebase.com/libs/firebaseui/3.1.1/firebaseui.js"></script>
+  <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.1.1/firebaseui.css" />
+  <!-- Initialize Firebase -->
   <script>
     var config = {
-      apiKey: "AIzaSyBiqwDiXaTG3-qqRjrMybgdXMikDP6tmSk",
-      authDomain: "gt-coding-project-1.firebaseapp.com",
-      databaseURL: "https://gt-coding-project-1.firebaseio.com",
-      projectId: "gt-coding-project-1",
-      storageBucket: "gt-coding-project-1.appspot.com",
-      messagingSenderId: "705133084492"
-    };
+        apiKey: "AIzaSyBiqwDiXaTG3-qqRjrMybgdXMikDP6tmSk",
+        authDomain: "gt-coding-project-1.firebaseapp.com",
+        databaseURL: "https://gt-coding-project-1.firebaseio.com",
+        projectId: "gt-coding-project-1",
+        storageBucket: "gt-coding-project-1.appspot.com",
+        messagingSenderId: "705133084492"
+        };
     firebase.initializeApp(config);
-  </script>
+
+    var database = firebase.database();
+
+    // Initialize the FirebaseUI Widget using Firebase.
+    var access_token;
+    var publicToken;
+    var item_id;
+    var remainingMoney = 0;
+    var ui = new firebaseui.auth.AuthUI(firebase.auth());
+        // Config for firebase auth UI
+        var uiConfig = {
+            callbacks: {
+                signInSuccessWithAuthResult: function(authResult, redirectUrl) {
+                // User successfully signed in.
+                // Return type determines whether we continue the redirect automatically
+                // or whether we leave that to developer to handle.
+                return true;
+                },
+                uiShown: function() {
+                // The widget is rendered.
+                // Hide the loader.
+                document.getElementById('loader').style.display = 'none';
+                }
+            },
+            // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
+            signInFlow: 'popup',
+            signInSuccessUrl: '/index',
+            signInOptions: [
+                // Leave the lines as is for the providers you want to offer your users.
+                firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+                firebase.auth.EmailAuthProvider.PROVIDER_ID,
+            ],
+            // Terms of service url.
+            tosUrl: '#',
+            // Privacy policy url.
+            privacyPolicyUrl: '#'
+        };
+        
+    </script>
   <!-- Bring in Firebase UI -->
   <script src="https://cdn.firebase.com/libs/firebaseui/3.1.1/firebaseui.js"></script>
   <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.1.1/firebaseui.css" />
@@ -34,11 +80,53 @@
 </head>
 
 <body>
-  <div class="container">
+  <div class="login-modal w-100 h-100" style="z-index: 10000">
+    <main>
+      <div id="Banner" class="row card-panel teal lighten-3"></div>
+
+      <div class="container row">
+        <img src="/images/Pail_Logo.png" height="125px">
+      </div>
+
+      <br>
+
+      <!-- firebase ui here -->
+      <div id="firebaseui-auth-container" class="col s2 offset-s3">
+        <!-- loader here -->
+        <div id="loader" class="col s2 offset-s3">Loading...</div>
+      </div>
+
+      <div class="row wrapper center">
+        <button class=" btn-small btn-submit waves-effect waves-light teal scale-transition" id="loginButton">
+          Log in without Sign-on
+        </button>
+      </div>
+
+      <footer class="page-footer teal wrapper">
+        <div class="container">
+          <div class="row">
+            <div>
+              <h5 class="white-text">Footer Content</h5>
+            </div>
+          </div>
+        </div>
+        <div class="footer-copyright">
+          <div class="container">
+            © 2014 Copyright Text
+          </div>
+        </div>
+      </footer>
+
+
+    </main>
+
+
+  </div>
+  <div class="container" style="display: none">
     <div class="grid">
       <div class="grid__column grid__column--is-twelve-columns">
         <div id="banner" class="everpresent-content">
-          <img src="/assets/Pail_Logo.png" width="150" height="auto">
+          <img src="/assets/Pail_Logo.png" width="100" height="auto">
           <p id="intro" class="everpresent-content__subheading">
             Welcome to Pail! Connect your bank account to get the most out of Pail.
           </p>
@@ -62,16 +150,30 @@
 
     <div id="app" class="connected-view">
 
+      <!-- Card that displays budget -->
+      <div class="row" id="budget-card">
+        <div class="col s12 m12">
+          <div class="card teal lighten-2">
+            <div class="card-content white-text">
+              <span class="card-title">Your Monthly Budget</span>
+              <span id="budget-card-body"></span>
+              <div id="budget-details" class="card-action"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Card that displays transactions to be sorted as discretionary or recurring -->
       <div class="row" id="set-transactions-card">
         <div class="col s12 m12">
           <div class="card teal lighten-2">
             <div class="card-content white-text">
-              <span class="card-title">Excellent! Your budget has been set to <span id="budget-set"></span>!</span>
-              <p>Click the button below to load transactions from this month. Next, categorize these transactions as
-                either Discretionary or Recurring. Only Discretionary transactions will be tracked in your budget.</p>
+              <span class="card-title">Excellent! Your monthly budget has been set to <span id="budget-set"></span>!</span>
+              <p>Click the button below to load transactions from this month. Next, select transactions that
+                should be included in the Discretionary budget. Only Discretionary transactions will be tracked in your
+                budget.</p>
             </div>
-            <div class="card-action">
+            <div id="card-action" class="card-action">
               <button id="get-transactions-btn" class="waves-effect waves-light btn">Get Transactions</button>
               <table>
                 <tbody id="get-transactions-data"></tbody>
@@ -92,7 +194,7 @@
               <br>
               <form action="#">
                 <p class="range-field">
-                  <input type="range" id="budget-amount" min="25" max="1000" />
+                  <input type="range" id="budget-amount" min="25" max="3000" />
                 </p>
               </form>
             </div>
@@ -113,9 +215,31 @@
 
   <!-- Start inline Javscript -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   <script>
+    $('#loginButton').on('click', function () {
+      window.location = '/index';
+    });
+
+    // The start method will wait until the DOM is loaded.
+    ui.start('#firebaseui-auth-container', {
+      signInOptions: [
+        firebase.auth.EmailAuthProvider.PROVIDER_ID,
+        firebase.auth.GoogleAuthProvider.PROVIDER_ID
+      ],
+      // Other config options...
+    });
+    ui.start('#firebaseui-auth-container', uiConfig);
+  </script>
+  <script>
+    // GLOBAL VARS
+    var budget = 0;
+    var spentMoney = 0;
+    var spendCats = [];
+    var transObj = {};
+
+
     (function ($) {
       var products = '<%= PLAID_PRODUCTS %>'.split(',');
       if (products.includes('assets')) {
@@ -133,9 +257,12 @@
           $.post('/get_access_token', {
             public_token: public_token
           }, function (data) {
+            publicToken = public_token
             $('#container').fadeOut('fast', function () {
               $('#item_id').text(data.item_id);
+              item_id = data.item_id;
               $('#access_token').text(data.access_token);
+              access_token = data.access_token;
               $('#intro').hide();
               $('#app, #steps').fadeIn('slow');
             });
@@ -272,7 +399,8 @@
             // Format the error
             var errorHtml = '<div class="inner"><p>' +
               '<strong>' + data.error.error_code + ':</strong> ' +
-              (data.error.display_message == null ? data.error.error_message : data.error.display_message) + '</p></div>';
+              (data.error.display_message == null ? data.error.error_message : data.error.display_message) +
+              '</p></div>';
 
             if (data.error.error_code === 'PRODUCT_NOT_READY') {
               // Add additional context for `PRODUCT_NOT_READY` errors
@@ -289,17 +417,28 @@
               });
             });
           } else {
-            console.log(data.transactions.transactions);
+            transObj = data.transactions.transactions
+            console.log(transObj);
+            $('#get-transactions-btn').fadeOut();
             $('#get-transactions-data').slideUp(function () {
-              var html = '<tr><td><strong>Name</strong></td><td><strong>Amount</strong></td><td><strong>Date</strong></td><td><strong>Category</strong></td></tr>';
+              var i = 0;
+              var html =
+                '<tr><td><strong>Name</strong></td><td><strong>Amount</strong></td><td><strong>Date</strong></td><td><strong>Include in Budget?</strong></td></tr>';
               data.transactions.transactions.forEach(function (txn, idx) {
                 html += '<tr>';
                 html += '<td>' + txn.name + '</td>';
                 html += '<td>$' + txn.amount + '</td>';
                 html += '<td>' + txn.date + '</td>';
-                html += '<td>' + '<button>Hello</button>' + '</td>';
+                html += '<td>' + "<button data-num=" + i + " data-txn=" + txn.amount +
+                  " id='include-btn' class='waves-effect waves-light btn teal darken-3'>Include</button>" +
+                  '</td>';
                 html += '</tr>';
+                i++;
               });
+              var button = $('<button>').text("Complete");
+              button.attr("class", "waves-effect waves-light btn teal darken-3");
+              button.attr("id", "submit-tran-btn");
+              $("#card-action").append(button);
 
               $(this).slideUp(function () {
                 $(this).html(html).slideDown();
@@ -308,6 +447,9 @@
           }
         });
       });
+
+
+
 
       // $('#get-balance-btn').on('click', function (e) {
       //   $.get('/balance', function (data) {
@@ -367,13 +509,99 @@
       return match && decodeURIComponent(match[1].replace(/\+/g, " "));
     }
 
+    // Submits the users selected budget, fades out card.
     $('#submit-budget').on('click', function () {
-      var budget = $('#budget-amount').val();
+      budget = parseInt($('#budget-amount').val());
       console.log(budget);
       $('#set-budget-card').fadeOut();
       $('#budget-set').text("$" + budget);
       $('#set-transactions-card').fadeIn();
 
+      if (uid && access_token && publicToken && item_id) {
+        $(".modal").hide();
+        database.ref("/users/"+uid).push({
+            "accessToken": access_token,
+            "publicToken": publicToken,
+            "itemID": item_id,
+            "remaining": remainingMoney,
+            "budget": budget
+        });
+      };
+    });
+
+    // Function to include transaction in budge
+    $(document).on("click", "#include-btn", function () {
+      spentMoney = spentMoney + parseInt($(this).attr("data-txn"));
+      console.log(spentMoney);
+
+      var newCats = transObj[$(this).attr('data-num')].category;
+      // console.log(newCats);
+
+      spendCats = (spendCats.concat(newCats));
+      console.log(spendCats);
+
+
+      $(this).closest('tr').fadeOut();
+    });
+
+    // Shows budget card on click.
+    $(document).on('click', '#submit-tran-btn', function () {
+      $("#steps").fadeOut();
+      $("#set-transactions-card").fadeOut();
+      $("#budget-card").fadeIn();
+
+      var budgetGraph = $('<div>');
+      budgetGraph.attr("id", "budget-graph");
+      budgetGraph.attr("class", "center-align teal darken-3");
+
+
+      $('#budget-card-body').append(budgetGraph);
+
+      var budgetSpent = $('<div>');
+      budgetSpent.attr('id', 'budget-remaining');
+      budgetSpent.attr("class", "center-align teal darken-1");
+
+      if (spentMoney / budget * 400 < 400) {
+        var height = spentMoney / budget * 400;
+      } else {
+        var height = 400;
+      }
+
+      if (height < 54) {
+        height = 53;
+      } else {
+        budgetSpent.height(height);
+      }
+
+      if (400 - height < 54) {
+        budgetGraph.height(height + 53);
+      } else if (height >= 400) {
+        budgetGraph.height(400);
+
+      } else {
+        budgetGraph.height(400);
+      }
+
+      if (spentMoney > 0) {
+        budgetSpent.append($("<p id= 'money-text'>").text('($' + spentMoney + ')'));
+      }
+
+      budgetGraph.append(budgetSpent);
+
+      remainingMoney = budget - spentMoney
+      budgetGraph.append($("<p id= 'remaining-text'>").text('$' + remainingMoney));
+
+
+      $('#budget-details').text("You have spent $" + spentMoney + " so far this month, and have $" + remainingMoney +
+        " left in you budget.")
+
+    });
+
+    var uid = null;
+    // firebase sign in success hides modal
+    firebase.auth().onAuthStateChanged((user) => {
+      // hide modal
+      uid = user.uid;
     });
   </script>
 </body>

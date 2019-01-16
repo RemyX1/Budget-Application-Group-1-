@@ -218,5 +218,32 @@ Hide things
 }
 
 .container{
+  margin-top: 15px;
+}
+
+#submit-tran-btn{
   margin-top: 10px;
+}
+
+#budget-card{
+  display: none;
+}
+
+#money-text{
+      font-size: xx-large;
+    opacity: .6;
+}
+
+#remaining-text{
+  font-size: xx-large;
+  z-index: 1200;
+}
+
+#budget-graph{
+  border-radius: 60px;
+}
+
+#budget-remaining{
+  border-radius: 60px 60px 0px 0px;
+  min-height: 53px;
 }

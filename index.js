@@ -7,15 +7,21 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var moment = require('moment');
 var plaid = require('plaid');
+var firebase = require("firebase");
 
 
 // Firebase Inclusion
-<script src="https://www.gstatic.com/firebasejs/5.7.2/firebase-app.js"></script>
-// Firebase services added: authentication, database
-<script src="https://www.gstatic.com/firebasejs/5.7.2/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/5.7.2/firebase-database.js"></script>
+var firebaseConfig = {
+  apiKey: "AIzaSyBiqwDiXaTG3-qqRjrMybgdXMikDP6tmSk",
+  authDomain: "gt-coding-project-1.firebaseapp.com",
+  databaseURL: "https://gt-coding-project-1.firebaseio.com",
+  projectId: "gt-coding-project-1",
+  storageBucket: "gt-coding-project-1.appspot.com",
+  messagingSenderId: "705133084492"
+};
+var firebaseApp = firebase.initializeApp(firebaseConfig);
 
-var APP_PORT = envvar.number('APP_PORT', 3000);
+var APP_PORT = envvar.number('APP_PORT', 4000);
 var PLAID_CLIENT_ID = envvar.string('PLAID_CLIENT_ID', '5c35daa348339d00116019bd');
 var PLAID_SECRET = envvar.string('PLAID_SECRET', 'e06aa7eba75a28905110f48a1cc097');
 var PLAID_PUBLIC_KEY = envvar.string('PLAID_PUBLIC_KEY', '7de647392bb62efed86423c6cbde9e');
@@ -28,6 +34,8 @@ var PLAID_PRODUCTS = envvar.string('PLAID_PRODUCTS', 'transactions');
 
 // We store the access_token in memory - in production, store it in a secure
 // persistent data store
+
+// Store these in firebase!!!
 var ACCESS_TOKEN = null;
 var PUBLIC_TOKEN = null;
 var ITEM_ID = null;

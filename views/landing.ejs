@@ -57,12 +57,11 @@
         };
         
     </script>
-    <!-- Bring in Firebase UI -->
 
     <link rel="stylesheet" type="text/css" href="/landing.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 
-    
+
 
     <title>Plaid</title>
 </head>
@@ -77,16 +76,21 @@
 
 
         <br>
-        <div class="row wrapper">
-            <button class=" btn-large btn-submit waves-effect waves-light teal scale-transition" id="loginButton">Click
-                Here To Log In!</button>
+
+
+
+        <!-- firebase ui here -->
+        <div id="firebaseui-auth-container" class="col s2 offset-s3">
+            <!-- loader here -->
+            <div id="loader" class="col s2 offset-s3">Loading...</div>
         </div>
 
-        <div id="firebaseui-auth-container">
-            <button class="col s2 offset-s3 btn-large btn-submit waves-effect waves-light red scale-transition scale-out"
-                id="loginButton">Click Here To Log In!</button>
+
+        <div class="row wrapper">
+            <button class=" btn-small btn-submit waves-effect waves-light teal scale-transition" id="loginButton">
+                Log in without Sign-on
+            </button>
         </div>
-        <div id="loader">Loading...</div>
 
         <footer class="page-footer teal wrapper">
             <div class="container">
@@ -113,14 +117,14 @@
         $('#loginButton').on('click', function () {
             window.location = '/index';
         });
-        
+
         // The start method will wait until the DOM is loaded.
         ui.start('#firebaseui-auth-container', {
             signInOptions: [
                 firebase.auth.EmailAuthProvider.PROVIDER_ID,
                 firebase.auth.GoogleAuthProvider.PROVIDER_ID
             ],
-        // Other config options...
+            // Other config options...
         });
         ui.start('#firebaseui-auth-container', uiConfig);
 
