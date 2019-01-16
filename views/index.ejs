@@ -123,7 +123,7 @@
 
   </div>
   <div class="container" style="display: none">
-    <div class="grid">
+    <div id="login-steps" class="grid">
       <div class="grid__column grid__column--is-twelve-columns">
         <div id="banner" class="everpresent-content">
           <img src="/assets/Pail_Logo.png" width="100" height="auto">
@@ -150,19 +150,6 @@
 
     <div id="app" class="connected-view">
 
-      <!-- Card that displays budget -->
-      <div class="row" id="budget-card">
-        <div class="col s12 m12">
-          <div class="card teal lighten-2">
-            <div class="card-content white-text">
-              <span class="card-title">Your Monthly Budget</span>
-              <span id="budget-card-body"></span>
-              <div id="budget-details" class="card-action"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
       <!-- Card that displays transactions to be sorted as discretionary or recurring -->
       <div class="row" id="set-transactions-card">
         <div class="col s12 m12">
@@ -182,6 +169,21 @@
           </div>
         </div>
       </div>
+
+      <!-- Card that displays budget -->
+      <div class="row" id="budget-card">
+        <div class="col s12 m12">
+          <div class="card teal lighten-2">
+            <div class="card-content white-text">
+              <span class="card-title">Your Monthly Budget</span>
+              <span id="budget-card-body"></span>
+              <div id="budget-details" class="card-action"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      
 
 
       <!-- Card to set you budget -->
@@ -243,6 +245,7 @@
     var transObj = {};
     var key;
     var uid;
+    var submittedBudget = false;
 
 
     (function ($) {
@@ -359,6 +362,7 @@
     // Submits the users selected budget, fades out card.
     $('#submit-budget').on('click', function () {
       budget = parseInt($('#budget-amount').val());
+      submittedBudget = true;
       console.log(budget);
       $('#set-budget-card').fadeOut();
       $('#budget-set').text("$" + budget);
@@ -417,6 +421,8 @@
 
 
 
+
+
     // Shows budget card on click.
     $(document).on('click', '#submit-tran-btn', function () {
       $("#steps").fadeOut();
@@ -426,6 +432,109 @@
       database.ref("users/" + uid).update({
         "spent": spentMoney,
       });
+
+      budgetGraphFunction();
+
+      // var budgetGraph = $('<div>');
+      // budgetGraph.attr("id", "budget-graph");
+      // budgetGraph.attr("class", "center-align teal darken-3");
+
+
+      // $('#budget-card-body').append(budgetGraph);
+
+      // var budgetSpent = $('<div>');
+      // budgetSpent.attr('id', 'budget-remaining');
+      // budgetSpent.attr("class", "center-align teal darken-1");
+
+      // if (spentMoney / budget * 400 < 400) {
+      //   var height = spentMoney / budget * 400;
+      // } else {
+      //   var height = 400;
+      // }
+
+      // if (height < 54) {
+      //   height = 53;
+      // } else {
+      //   budgetSpent.height(height);
+      // }
+
+      // if (400 - height < 54) {
+      //   budgetGraph.height(height + 53);
+      // } else if (height >= 400) {
+      //   budgetGraph.height(400);
+
+      // } else {
+      //   budgetGraph.height(400);
+      // }
+
+      // if (spentMoney > 0) {
+      //   budgetSpent.append($("<p id= 'money-text'>").text('($' + spentMoney + ')'));
+      // }
+
+      // budgetGraph.append(budgetSpent);
+
+      // remainingMoney = budget - spentMoney
+      // budgetGraph.append($("<p id= 'remaining-text'>").text('$' + remainingMoney));
+
+
+      // $('#budget-details').text("You have spent $" + spentMoney + " so far this month, and have $" + remainingMoney +
+      //   " left in you budget.")
+
+    });
+
+
+
+
+    firebase.auth().onAuthStateChanged(function (user) {
+      console.log(budget)
+      loadData(user.uid, user);
+
+    });
+
+
+    var loadData = function (id, user) {
+      database.ref('/users/' + id).on('value', function (snapshot) {
+        
+        if (snapshot.exists()){
+        budget = snapshot.val().budget;
+        console.log(snapshot.val().budget);
+        }
+        if (user && budget != 0) {
+          uid = user.uid
+          console.log(uid);
+          $(".login-modal").hide();
+          $(".container").attr('style', "display:unset");
+          $("#login-steps").hide();
+          $("#app").fadeIn();
+
+          $('#set-budget-card').hide();
+          $("#budget-card").fadeIn();
+
+          getDataFromFirebase();
+
+        } else if (user) {
+          uid = user.uid
+          console.log(uid);
+          $(".login-modal").hide();
+          $(".container").attr('style', "display:unset");
+        } else {
+          console.log("no user signed in.")
+
+        }
+      });
+    }
+
+    var getDataFromFirebase = function () {
+      database.ref('/users/' + uid).once('value', function (snapshot) {
+        budget = snapshot.val().budget;
+        spentMoney = snapshot.val().spent;
+        budgetGraphFunction();
+      });
+    }
+
+    var budgetGraphFunction = function () {
+
+      $('#budget-card-body').html('');
 
       var budgetGraph = $('<div>');
       budgetGraph.attr("id", "budget-graph");
@@ -471,27 +580,12 @@
 
       $('#budget-details').text("You have spent $" + spentMoney + " so far this month, and have $" + remainingMoney +
         " left in you budget.")
+    }
 
-    });
 
-    
-  
-    
-      firebase.auth().onAuthStateChanged(function (user) {
-        if (user) {
-          uid = user.uid
-          console.log(uid);
-          $(".login-modal").hide();
-          $(".container").attr('style', "display:unset");
-        } else {
-         console.log("no user signed in.")
-        }
-      });
 
-      
-  
 
- 
+
   </script>
 </body>
 
