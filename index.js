@@ -256,7 +256,8 @@ app.get('/item', function (request, response, next) {
   });
 });
 
-var server = app.listen(APP_PORT, function () {
+// instead of APP_PORT we grab heroku's port
+var server = app.listen(process.env.PORT || port, function () {
   console.log('plaid-quickstart server listening on port ' + APP_PORT);
 });
 
