@@ -245,7 +245,6 @@
     var transObj = {};
     var key;
     var uid;
-    var submittedBudget = false;
 
 
     (function ($) {
@@ -362,7 +361,6 @@
     // Submits the users selected budget, fades out card.
     $('#submit-budget').on('click', function () {
       budget = parseInt($('#budget-amount').val());
-      submittedBudget = true;
       console.log(budget);
       $('#set-budget-card').fadeOut();
       $('#budget-set').text("$" + budget);
@@ -493,7 +491,7 @@
 
 
     var loadData = function (id, user) {
-      database.ref('/users/' + id).on('value', function (snapshot) {
+      database.ref('/users/' + id).once('value', function (snapshot) {
         
         if (snapshot.exists()){
         budget = snapshot.val().budget;
@@ -503,8 +501,10 @@
           uid = user.uid
           console.log(uid);
           $(".login-modal").hide();
-          $(".container").attr('style', "display:unset");
-          $("#login-steps").hide();
+          $(".container").attr('style', "display:block");
+          $("#steps").hide();
+          $("#container").hide();
+          $("#intro").hide();
           $("#app").fadeIn();
 
           $('#set-budget-card').hide();
@@ -516,7 +516,7 @@
           uid = user.uid
           console.log(uid);
           $(".login-modal").hide();
-          $(".container").attr('style', "display:unset");
+          $(".container").attr('style', "display:block");
         } else {
           console.log("no user signed in.")
 
