@@ -24,13 +24,13 @@
   <!-- Initialize Firebase -->
   <script>
     var config = {
-        apiKey: "AIzaSyBiqwDiXaTG3-qqRjrMybgdXMikDP6tmSk",
-        authDomain: "gt-coding-project-1.firebaseapp.com",
-        databaseURL: "https://gt-coding-project-1.firebaseio.com",
-        projectId: "gt-coding-project-1",
-        storageBucket: "gt-coding-project-1.appspot.com",
-        messagingSenderId: "705133084492"
-        };
+      apiKey: "AIzaSyBiqwDiXaTG3-qqRjrMybgdXMikDP6tmSk",
+      authDomain: "gt-coding-project-1.firebaseapp.com",
+      databaseURL: "https://gt-coding-project-1.firebaseio.com",
+      projectId: "gt-coding-project-1",
+      storageBucket: "gt-coding-project-1.appspot.com",
+      messagingSenderId: "705133084492"
+    };
     firebase.initializeApp(config);
 
     var database = firebase.database();
@@ -41,36 +41,36 @@
     var item_id;
     var remainingMoney = 0;
     var ui = new firebaseui.auth.AuthUI(firebase.auth());
-        // Config for firebase auth UI
-        var uiConfig = {
-            callbacks: {
-                signInSuccessWithAuthResult: function(authResult, redirectUrl) {
-                // User successfully signed in.
-                // Return type determines whether we continue the redirect automatically
-                // or whether we leave that to developer to handle.
-                return true;
-                },
-                uiShown: function() {
-                // The widget is rendered.
-                // Hide the loader.
-                document.getElementById('loader').style.display = 'none';
-                }
-            },
-            // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
-            signInFlow: 'popup',
-            signInSuccessUrl: '/index',
-            signInOptions: [
-                // Leave the lines as is for the providers you want to offer your users.
-                firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-                firebase.auth.EmailAuthProvider.PROVIDER_ID,
-            ],
-            // Terms of service url.
-            tosUrl: '#',
-            // Privacy policy url.
-            privacyPolicyUrl: '#'
-        };
-        
-    </script>
+    // Config for firebase auth UI
+    var uiConfig = {
+      callbacks: {
+        signInSuccessWithAuthResult: function (authResult, redirectUrl) {
+          // User successfully signed in.
+          // Return type determines whether we continue the redirect automatically
+          // or whether we leave that to developer to handle.
+          return true;
+        },
+        uiShown: function () {
+          // The widget is rendered.
+          // Hide the loader.
+          document.getElementById('loader').style.display = 'none';
+        }
+      },
+      // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
+      signInFlow: 'popup',
+      signInSuccessUrl: '/index',
+      signInOptions: [
+        // Leave the lines as is for the providers you want to offer your users.
+        firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+        firebase.auth.EmailAuthProvider.PROVIDER_ID,
+      ],
+      // Terms of service url.
+      tosUrl: '#',
+      // Privacy policy url.
+      privacyPolicyUrl: '#'
+    };
+
+  </script>
   <!-- Bring in Firebase UI -->
   <script src="https://cdn.firebase.com/libs/firebaseui/3.1.1/firebaseui.js"></script>
   <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.1.1/firebaseui.css" />
@@ -242,6 +242,7 @@
     var spendCats = [];
     var transObj = {};
     var key;
+    var uid;
 
 
     (function ($) {
@@ -291,7 +292,7 @@
         handler.open();
       });
 
-     
+
 
       $('#get-transactions-btn').on('click', function (e) {
         $.get('/transactions', function (data) {
@@ -364,17 +365,14 @@
       $('#set-transactions-card').fadeIn();
 
       if (uid && access_token && publicToken && item_id) {
-        database.ref("/users/"+uid).push({
-            "accessToken": access_token,
-            "publicToken": publicToken,
-            "itemID": item_id,
-            "remaining": remainingMoney,
-            "spent": 0,
-            "budget": budget
-        }).then((snap) => {
-          key = snap.key
-          console.log(key);
-        });
+        database.ref("/users/" + uid).set({
+          "accessToken": access_token,
+          "publicToken": publicToken,
+          "itemID": item_id,
+          "remaining": remainingMoney,
+          "spent": 0,
+          "budget": budget
+        })
       };
     });
 
@@ -382,7 +380,7 @@
     $(document).on("click", "#include-btn", function () {
       spentMoney = spentMoney + parseInt($(this).attr("data-txn"));
       console.log(spentMoney);
-      
+
 
       var newCats = transObj[$(this).attr('data-num')].category;
       // console.log(newCats);
@@ -395,26 +393,26 @@
 
       // get coupons
       spendCats.forEach(category => {
-      // Constructing a queryURL using the category
-      var queryURL = "https://api.discountapi.com/v2/deals?api_key=JunrcDyn&page=1&per_page=5&query="+category;
-      // Performing an AJAX request with the queryURL
-      $("#deals").empty();
-      $.ajax({
-        url: queryURL,
-        method: "GET"
-      }).then(res=>{
+        // Constructing a queryURL using the category
+        var queryURL = "https://api.discountapi.com/v2/deals?api_key=JunrcDyn&page=1&per_page=5&query=" + category;
+        // Performing an AJAX request with the queryURL
+        $("#deals").empty();
+        $.ajax({
+          url: queryURL,
+          method: "GET"
+        }).then(res => {
           var catDeals = res.deals;
           catDeals.forEach(dealObj => {
             var dealInfo = dealObj.deal;
             var dealTitle = dealInfo.short_title;
             var dealLink = dealInfo.url;
             var dealDiv = $("<div>");
-            dealDiv.append("<a href="+dealLink+"<h3>"+dealTitle+"</h3></a>");
+            dealDiv.append("<a href=" + dealLink + "<h3>" + dealTitle + "</h3></a>");
             $("#deals").append(dealDiv);
           });
         })
-    });
       });
+    });
 
 
 
@@ -425,7 +423,7 @@
       $("#set-transactions-card").fadeOut();
       $("#budget-card").fadeIn();
 
-      database.ref("users/" + uid + "/" + key).update({
+      database.ref("users/" + uid).update({
         "spent": spentMoney,
       });
 
@@ -476,15 +474,24 @@
 
     });
 
-    var uid = null;
-    // firebase sign in success hides modal
-    firebase.auth().onAuthStateChanged((user) => {
-      // hide modal
+    
+  
+    
+      firebase.auth().onAuthStateChanged(function (user) {
+        if (user) {
+          uid = user.uid
+          console.log(uid);
+          $(".login-modal").hide();
+          $(".container").attr('style', "display:unset");
+        } else {
+         console.log("no user signed in.")
+        }
+      });
 
-      $(".login-modal").hide();
-      $(".container").attr('style', "display:unset");
-      uid = user.uid;
-    });
+      
+  
+
+ 
   </script>
 </body>
 
