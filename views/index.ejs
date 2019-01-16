@@ -408,8 +408,9 @@
             var dealInfo = dealObj.deal;
             var dealTitle = dealInfo.short_title;
             var dealLink = dealInfo.url;
+            var dealImg = dealInfo.image_url;
             var dealDiv = $("<div>");
-            dealDiv.append("<a href="+dealLink+"<h3>"+dealTitle+"</h3></a>");
+            dealDiv.append("<li><img src="+dealImg+"/><a href="+dealLink+"<h3>"+dealTitle+"</h3></a><li>");
             $("#deals").append(dealDiv);
           });
         })
