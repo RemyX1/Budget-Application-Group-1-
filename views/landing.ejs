@@ -67,48 +67,60 @@
 </head>
 
 <body>
-    <main>
+
+    <header>
         <div id="Banner" class="row card-panel teal lighten-3"></div>
 
         <div class="container row">
             <img src="/images/Pail_Logo.png" height="125px">
         </div>
+    </header>
 
-
+    <main>
         <br>
+        <div class="container" id="main">
+            <div class="row">
+                <div class="col s4 Desc ">
+                    <p>Designed for multi-platform use!</p>
+                </div>
+                <div class="col s4 Desc">
+                    <p>Visual spending and savings!</p>
+                </div>
+                <div class="col s4 Desc">
+                    <p>Efficient and easy to use!</p>
+                </div>
+            </div>
+        </div>
 
-
-
-        <!-- firebase ui here -->
-        <div id="firebaseui-auth-container" class="col s2 offset-s3">
-            <!-- loader here -->
-            <div id="loader" class="col s2 offset-s3">Loading...</div>
+        <div class="row">
+            <h4 class="col s4 offset-s5">Sign in</h4>\
         </div>
 
 
         <div class="row wrapper">
-            <button class=" btn-small btn-submit waves-effect waves-light teal scale-transition" id="loginButton">
-                Log in without Sign-on
-            </button>
+            <button class=" btn-large btn-submit waves-effect waves-light teal scale-transition" id="loginButton">Click
+                Here To Log In!</button>
         </div>
 
-        <footer class="page-footer teal wrapper">
-            <div class="container">
-                <div class="row">
-                    <div>
-                        <h5 class="white-text">Footer Content</h5>
-                    </div>
+    </main>
+    <footer class="page-footer teal wrapper">
+        <div class="container">
+            <div class="row">
+                <div>
+                    <h5 class="white-text">Footer Content</h5>
                 </div>
             </div>
             <div class="footer-copyright">
                 <div class="container">
-                    © 2014 Copyright Text
+                    © 2019 Copyright Text
                 </div>
+
             </div>
-        </footer>
+        </div>
+    </footer>
 
 
-    </main>
+
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
     <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
@@ -127,7 +139,6 @@
             // Other config options...
         });
         ui.start('#firebaseui-auth-container', uiConfig);
-
     </script>
 
 </body>
