@@ -7,8 +7,21 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var moment = require('moment');
 var plaid = require('plaid');
+var firebase = require("firebase");
 
-var APP_PORT = envvar.number('APP_PORT', 8000);
+
+// Firebase Inclusion
+var firebaseConfig = {
+  apiKey: "AIzaSyBiqwDiXaTG3-qqRjrMybgdXMikDP6tmSk",
+  authDomain: "gt-coding-project-1.firebaseapp.com",
+  databaseURL: "https://gt-coding-project-1.firebaseio.com",
+  projectId: "gt-coding-project-1",
+  storageBucket: "gt-coding-project-1.appspot.com",
+  messagingSenderId: "705133084492"
+};
+var firebaseApp = firebase.initializeApp(firebaseConfig);
+
+var APP_PORT = envvar.number('APP_PORT', 4000);
 var PLAID_CLIENT_ID = envvar.string('PLAID_CLIENT_ID', '5c35daa348339d00116019bd');
 var PLAID_SECRET = envvar.string('PLAID_SECRET', 'e06aa7eba75a28905110f48a1cc097');
 var PLAID_PUBLIC_KEY = envvar.string('PLAID_PUBLIC_KEY', '7de647392bb62efed86423c6cbde9e');
