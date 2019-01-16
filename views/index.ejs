@@ -8,13 +8,121 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <!-- <link rel="stylesheet" href="https://threads.plaid.com/threads.css"> -->
 
+  <!-- Firebase Inclusion -->
+  <script src="https://www.gstatic.com/firebasejs/5.7.2/firebase-app.js"></script>
+  <!-- Firebase services added: authentication, database -->
+  <script src="https://www.gstatic.com/firebasejs/5.7.2/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.7.2/firebase-database.js"></script>
+  <!-- Initialize Firebase -->
+  <!-- Firebase Inclusion -->
+  <script src="https://www.gstatic.com/firebasejs/5.7.2/firebase-app.js"></script>
+  <!-- Firebase services added: authentication, database -->
+  <script src="https://www.gstatic.com/firebasejs/5.7.2/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.7.2/firebase-database.js"></script>
+  <script src="https://cdn.firebase.com/libs/firebaseui/3.1.1/firebaseui.js"></script>
+  <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.1.1/firebaseui.css" />
+  <!-- Initialize Firebase -->
+  <script>
+    var config = {
+        apiKey: "AIzaSyBiqwDiXaTG3-qqRjrMybgdXMikDP6tmSk",
+        authDomain: "gt-coding-project-1.firebaseapp.com",
+        databaseURL: "https://gt-coding-project-1.firebaseio.com",
+        projectId: "gt-coding-project-1",
+        storageBucket: "gt-coding-project-1.appspot.com",
+        messagingSenderId: "705133084492"
+        };
+    firebase.initializeApp(config);
+
+    var database = firebase.database();
+
+    // Initialize the FirebaseUI Widget using Firebase.
+    var access_token;
+    var publicToken;
+    var item_id;
+    var remainingMoney = 0;
+    var ui = new firebaseui.auth.AuthUI(firebase.auth());
+        // Config for firebase auth UI
+        var uiConfig = {
+            callbacks: {
+                signInSuccessWithAuthResult: function(authResult, redirectUrl) {
+                // User successfully signed in.
+                // Return type determines whether we continue the redirect automatically
+                // or whether we leave that to developer to handle.
+                return true;
+                },
+                uiShown: function() {
+                // The widget is rendered.
+                // Hide the loader.
+                document.getElementById('loader').style.display = 'none';
+                }
+            },
+            // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
+            signInFlow: 'popup',
+            signInSuccessUrl: '/index',
+            signInOptions: [
+                // Leave the lines as is for the providers you want to offer your users.
+                firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+                firebase.auth.EmailAuthProvider.PROVIDER_ID,
+            ],
+            // Terms of service url.
+            tosUrl: '#',
+            // Privacy policy url.
+            privacyPolicyUrl: '#'
+        };
+        
+    </script>
+  <!-- Bring in Firebase UI -->
+  <script src="https://cdn.firebase.com/libs/firebaseui/3.1.1/firebaseui.js"></script>
+  <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.1.1/firebaseui.css" />
 
   <link rel="stylesheet" type="text/css" href="style.css">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 
 <body>
-  <div class="container">
+  <div class="login-modal w-100 h-100" style="z-index: 10000">
+    <main>
+      <div id="Banner" class="row card-panel teal lighten-3"></div>
+
+      <div class="container row">
+        <img src="/images/Pail_Logo.png" height="125px">
+      </div>
+
+      <br>
+
+      <!-- firebase ui here -->
+      <div id="firebaseui-auth-container" class="col s2 offset-s3">
+        <!-- loader here -->
+        <div id="loader" class="col s2 offset-s3">Loading...</div>
+      </div>
+
+      <div class="row wrapper center">
+        <button class=" btn-small btn-submit waves-effect waves-light teal scale-transition" id="loginButton">
+          Log in without Sign-on
+        </button>
+      </div>
+
+      <footer class="page-footer teal wrapper">
+        <div class="container">
+          <div class="row">
+            <div>
+              <h5 class="white-text">Footer Content</h5>
+            </div>
+          </div>
+        </div>
+        <div class="footer-copyright">
+          <div class="container">
+            © 2014 Copyright Text
+          </div>
+        </div>
+      </footer>
+
+
+    </main>
+
+
+  </div>
+  <div class="container" style="display: none">
     <div class="grid">
       <div class="grid__column grid__column--is-twelve-columns">
         <div id="banner" class="everpresent-content">
@@ -107,8 +215,23 @@
 
   <!-- Start inline Javscript -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script>
+    $('#loginButton').on('click', function () {
+      window.location = '/index';
+    });
+
+    // The start method will wait until the DOM is loaded.
+    ui.start('#firebaseui-auth-container', {
+      signInOptions: [
+        firebase.auth.EmailAuthProvider.PROVIDER_ID,
+        firebase.auth.GoogleAuthProvider.PROVIDER_ID
+      ],
+      // Other config options...
+    });
+    ui.start('#firebaseui-auth-container', uiConfig);
+  </script>
   <script>
     // GLOBAL VARS
     var budget = 0;
@@ -134,9 +257,12 @@
           $.post('/get_access_token', {
             public_token: public_token
           }, function (data) {
+            publicToken = public_token
             $('#container').fadeOut('fast', function () {
               $('#item_id').text(data.item_id);
+              item_id = data.item_id;
               $('#access_token').text(data.access_token);
+              access_token = data.access_token;
               $('#intro').hide();
               $('#app, #steps').fadeIn('slow');
             });
@@ -273,7 +399,8 @@
             // Format the error
             var errorHtml = '<div class="inner"><p>' +
               '<strong>' + data.error.error_code + ':</strong> ' +
-              (data.error.display_message == null ? data.error.error_message : data.error.display_message) + '</p></div>';
+              (data.error.display_message == null ? data.error.error_message : data.error.display_message) +
+              '</p></div>';
 
             if (data.error.error_code === 'PRODUCT_NOT_READY') {
               // Add additional context for `PRODUCT_NOT_READY` errors
@@ -295,13 +422,16 @@
             $('#get-transactions-btn').fadeOut();
             $('#get-transactions-data').slideUp(function () {
               var i = 0;
-              var html = '<tr><td><strong>Name</strong></td><td><strong>Amount</strong></td><td><strong>Date</strong></td><td><strong>Include in Budget?</strong></td></tr>';
+              var html =
+                '<tr><td><strong>Name</strong></td><td><strong>Amount</strong></td><td><strong>Date</strong></td><td><strong>Include in Budget?</strong></td></tr>';
               data.transactions.transactions.forEach(function (txn, idx) {
                 html += '<tr>';
                 html += '<td>' + txn.name + '</td>';
                 html += '<td>$' + txn.amount + '</td>';
                 html += '<td>' + txn.date + '</td>';
-                html += '<td>' + "<button data-num=" + i + " data-txn=" + txn.amount + " id='include-btn' class='waves-effect waves-light btn teal darken-3'>Include</button>" + '</td>';
+                html += '<td>' + "<button data-num=" + i + " data-txn=" + txn.amount +
+                  " id='include-btn' class='waves-effect waves-light btn teal darken-3'>Include</button>" +
+                  '</td>';
                 html += '</tr>';
                 i++;
               });
@@ -386,6 +516,17 @@
       $('#set-budget-card').fadeOut();
       $('#budget-set').text("$" + budget);
       $('#set-transactions-card').fadeIn();
+
+      if (uid && access_token && publicToken && item_id) {
+        $(".modal").hide();
+        database.ref("/users/"+uid).push({
+            "accessToken": access_token,
+            "publicToken": publicToken,
+            "itemID": item_id,
+            "remaining": remainingMoney,
+            "budget": budget
+        });
+      };
     });
 
     // Function to include transaction in budge
@@ -425,7 +566,7 @@
       } else {
         var height = 400;
       }
-      
+
       if (height < 54) {
         height = 53;
       } else {
@@ -447,16 +588,21 @@
 
       budgetGraph.append(budgetSpent);
 
-      var remainingMoney = budget - spentMoney
+      remainingMoney = budget - spentMoney
       budgetGraph.append($("<p id= 'remaining-text'>").text('$' + remainingMoney));
 
-      $('#budget-details').text("You have spent $" + spentMoney + " so far this month, and have $" + remainingMoney + " left in you budget.")
 
-
-
+      $('#budget-details').text("You have spent $" + spentMoney + " so far this month, and have $" + remainingMoney +
+        " left in you budget.")
 
     });
 
+    var uid = null;
+    // firebase sign in success hides modal
+    firebase.auth().onAuthStateChanged((user) => {
+      // hide modal
+      uid = user.uid;
+    });
   </script>
 </body>
 
