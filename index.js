@@ -21,7 +21,7 @@ var firebaseConfig = {
 };
 var firebaseApp = firebase.initializeApp(firebaseConfig);
 
-var APP_PORT = envvar.number('APP_PORT', 80);
+var APP_PORT = envvar.number('APP_PORT', 2500);
 var PLAID_CLIENT_ID = envvar.string('PLAID_CLIENT_ID', '5c35daa348339d00116019bd');
 var PLAID_SECRET = envvar.string('PLAID_SECRET', 'e06aa7eba75a28905110f48a1cc097');
 var PLAID_PUBLIC_KEY = envvar.string('PLAID_PUBLIC_KEY', '7de647392bb62efed86423c6cbde9e');
@@ -257,7 +257,9 @@ app.get('/item', function (request, response, next) {
 });
 
 // instead of APP_PORT we grab heroku's port
-var server = app.listen(process.env.PORT || port, function () {
+// var server = app.listen(process.env.PORT || port, function () {
+var server = app.listen(APP_PORT, function () {
+
   console.log('plaid-quickstart server listening on port ' + APP_PORT);
 });
 
