@@ -206,7 +206,7 @@
           </div>
         </div>
       </div>
-      <div id="deals">
+      <div id="deals" class="container">
         <!-- deals go here -->
       </div>
 
@@ -409,8 +409,12 @@
             var dealTitle = dealInfo.short_title;
             var dealLink = dealInfo.url;
             var dealDiv = $("<div>");
-            dealDiv.append("<a href=" + dealLink + "<h3>" + dealTitle + "</h3></a>");
+            var anchor = $("<a href=" + dealLink + "<h3>" + dealTitle + "</h3></a>");
+            dealDiv.addClass("row")
+            anchor.addClass("card-panel teal white-text col s3 offset-s1")
             $("#deals").append(dealDiv);
+            dealDiv.append(anchor)
+            dealDiv.style.margin-bottom
           });
         })
       });
