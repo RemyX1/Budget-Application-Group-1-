@@ -28,17 +28,14 @@ color: black;
     text-align: center
 }
 
+#homepageImage{
+  max-width: 100%;
+  /* width: 50px; */
+}
 
 
 .Desc {
 
-    border: 10px;
-    border-color: 0D4E49;
-    border-style: inset;
-    text-align: center;
-    font-size: 20px;
-    font-weight: bold;
-    color: teal;
 }
 
 #main {
@@ -57,10 +54,8 @@ body {
   main {
     flex: 1 0 auto;
   }
-      
-  h4 {
-
-    color: teal;
-    font-weight: bold;
-
+  
+  #funnyTag{
+    font-size: 90%;
+    color: grey;
   }

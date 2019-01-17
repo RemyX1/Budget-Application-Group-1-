@@ -16,30 +16,30 @@
     <!-- Initialize Firebase -->
     <script>
         var config = {
-        apiKey: "AIzaSyBiqwDiXaTG3-qqRjrMybgdXMikDP6tmSk",
-        authDomain: "gt-coding-project-1.firebaseapp.com",
-        databaseURL: "https://gt-coding-project-1.firebaseio.com",
-        projectId: "gt-coding-project-1",
-        storageBucket: "gt-coding-project-1.appspot.com",
-        messagingSenderId: "705133084492"
+            apiKey: "AIzaSyBiqwDiXaTG3-qqRjrMybgdXMikDP6tmSk",
+            authDomain: "gt-coding-project-1.firebaseapp.com",
+            databaseURL: "https://gt-coding-project-1.firebaseio.com",
+            projectId: "gt-coding-project-1",
+            storageBucket: "gt-coding-project-1.appspot.com",
+            messagingSenderId: "705133084492"
         };
         firebase.initializeApp(config);
 
-    // Initialize the FirebaseUI Widget using Firebase.
-    var ui = new firebaseui.auth.AuthUI(firebase.auth());
+        // Initialize the FirebaseUI Widget using Firebase.
+        var ui = new firebaseui.auth.AuthUI(firebase.auth());
         // Config for firebase auth UI
         var uiConfig = {
             callbacks: {
-                signInSuccessWithAuthResult: function(authResult, redirectUrl) {
-                // User successfully signed in.
-                // Return type determines whether we continue the redirect automatically
-                // or whether we leave that to developer to handle.
-                return true;
+                signInSuccessWithAuthResult: function (authResult, redirectUrl) {
+                    // User successfully signed in.
+                    // Return type determines whether we continue the redirect automatically
+                    // or whether we leave that to developer to handle.
+                    return true;
                 },
-                uiShown: function() {
-                // The widget is rendered.
-                // Hide the loader.
-                document.getElementById('loader').style.display = 'none';
+                uiShown: function () {
+                    // The widget is rendered.
+                    // Hide the loader.
+                    document.getElementById('loader').style.display = 'none';
                 }
             },
             // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
@@ -55,7 +55,7 @@
             // Privacy policy url.
             privacyPolicyUrl: '#'
         };
-        
+
     </script>
 
     <link rel="stylesheet" type="text/css" href="/landing.css">
@@ -69,51 +69,44 @@
 <body>
 
     <header>
-        <div id="Banner" class="row card-panel teal lighten-3"></div>
-
-       <div class="container row">
-        <img src="/images/Pail_Logo.png" height="125px">
-       </div>
+        <div id="Banner" class="row card-panel">
+            <div class="container">
+                <img src="/images/Pail_Logo.png" width="100" height="auto">
+            </div>
+        </div>
     </header>
 
     <main>
-     <br>
-       <div class="container" id="main">
-           <div class="row">
-            <div class="col s4 Desc "><p>Designed for multi-platform use!</p></div>
-            <div class="col s4 Desc"><p>Visual spending and savings!</p></div>
-            <div class="col s4 Desc"><p>Efficient and easy to use!</p></div>
-           </div>
-       </div>
-       
-       <div class="row">
-        <h4 class="col s4 offset-s5">Sign in</h4>\
-       </div>
-
-    
-        <div class="row wrapper">
-            <button class=" btn-large btn-submit waves-effect waves-light teal scale-transition" id="loginButton">Click Here To Log In!</button>
-        </div>
-
-    </main>
-        <footer class="page-footer teal wrapper">
-            <div class="container">
-                <div class="row">
-                    <div>
-                        <h5 class="white-text">Footer Content</h5>
+        <br>
+        <div class="container" id="main">
+            <div class="row valign-wrapper">
+                <div class="col m7  ">
+                    <img id="homepageImage" src="/images/pailScreens.png">
+                </div>
+                <div class="col m5 ">
+                    <h3 class="center-align">Make a budget and get coupons for retailers where you spend the most.</h3>
+                    <div class="center-align">
+                        <br>
+                        <br>
+                        <button class=" btn-large btn-submit waves-effect waves-light teal scale-transition" id="loginButton">Sign
+                            Up with Google</button>
+                        <p id="funnyTag">Your data is safe with us. Trust me.</p>
                     </div>
                 </div>
-                <div class="footer-copyright">
-                  <div class="container">
-                  © 2019 Copyright Text
-                  </div>
 
-                </div>
             </div>
-        </footer>
+        </div>
 
 
-    
+    </main>
+    <footer class="page-footer footer-copyright teal wrapper">
+        <div class="container">
+            © 2019 Copyright Team 1
+        </div>
+    </footer>
+
+
+
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
     <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
