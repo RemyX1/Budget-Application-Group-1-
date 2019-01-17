@@ -22,7 +22,6 @@ var firebase = require("firebase");
 // =============================================================================
 // #### PLAID SETUP ####
 
-// Storing Plaid variables
 var APP_PORT = envvar.number('APP_PORT', 2500);
 var PLAID_CLIENT_ID = envvar.string('PLAID_CLIENT_ID', '5c35daa348339d00116019bd');
 var PLAID_SECRET = envvar.string('PLAID_SECRET', 'e06aa7eba75a28905110f48a1cc097');
@@ -36,6 +35,9 @@ var PLAID_PRODUCTS = envvar.string('PLAID_PRODUCTS', 'transactions');
 
 // We store the access_token in memory - in production, store it in a secure
 // persistent data store
+var ACCESS_TOKEN = null;
+var PUBLIC_TOKEN = null;
+var ITEM_ID = null;
 
 // Initialize the Plaid client
 // Find your API keys in the Dashboard (https://dashboard.plaid.com/account/keys)
