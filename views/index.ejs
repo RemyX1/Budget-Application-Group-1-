@@ -2,46 +2,47 @@
 <html lang="en">
 
 <head>
+  <!-- Meta Page Characteristics -->
   <meta charset="UTF-8">
-  <title>Plaid Transaction</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <!-- <link rel="stylesheet" href="https://threads.plaid.com/threads.css"> -->
+  <title>Pail App</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- Firebase Inclusion -->
+  <!-- ============================================================================= -->
+  <!--#### STYLING ####-->
+  <!-- Importing Materialize CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <!-- Importing Google Fonts -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <!-- Custom Styling -->
+  <link rel="stylesheet" type="text/css" href="style.css">
+
+  <!-- ============================================================================= -->
+  <!--#### FIREBASE ####-->
+  <!-- Firebase Core App -->
   <script src="https://www.gstatic.com/firebasejs/5.7.2/firebase-app.js"></script>
-  <!-- Firebase services added: authentication, database -->
+
+  <!-- Firebase Core App Initialization -->
+  <script>
+    firebase.initializeApp({
+          apiKey: "AIzaSyBiqwDiXaTG3-qqRjrMybgdXMikDP6tmSk",
+          authDomain: "gt-coding-project-1.firebaseapp.com",
+          databaseURL: "https://gt-coding-project-1.firebaseio.com",
+          projectId: "gt-coding-project-1",
+          storageBucket: "gt-coding-project-1.appspot.com",
+          messagingSenderId: "705133084492"
+        });
+  </script>
+
+  <!-- Firebase Authentication -->
   <script src="https://www.gstatic.com/firebasejs/5.7.2/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/5.7.2/firebase-database.js"></script>
-  <!-- Initialize Firebase -->
-  <!-- Firebase Inclusion -->
-  <script src="https://www.gstatic.com/firebasejs/5.7.2/firebase-app.js"></script>
-  <!-- Firebase services added: authentication, database -->
-  <script src="https://www.gstatic.com/firebasejs/5.7.2/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/5.7.2/firebase-database.js"></script>
+  <!-- Firebase UI for Authentication, JS and CSS-->
   <script src="https://cdn.firebase.com/libs/firebaseui/3.1.1/firebaseui.js"></script>
   <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.1.1/firebaseui.css" />
-  <!-- Initialize Firebase -->
+  <!-- Initialize the firebase UI authentication -->
   <script>
-    var config = {
-      apiKey: "AIzaSyBiqwDiXaTG3-qqRjrMybgdXMikDP6tmSk",
-      authDomain: "gt-coding-project-1.firebaseapp.com",
-      databaseURL: "https://gt-coding-project-1.firebaseio.com",
-      projectId: "gt-coding-project-1",
-      storageBucket: "gt-coding-project-1.appspot.com",
-      messagingSenderId: "705133084492"
-    };
-    firebase.initializeApp(config);
-
-    var database = firebase.database();
-
-    // Initialize the FirebaseUI Widget using Firebase.
-    var access_token;
-    var publicToken;
-    var item_id;
-    var remainingMoney = 0;
     var ui = new firebaseui.auth.AuthUI(firebase.auth());
-    // Config for firebase auth UI
+        // Firebase Auth UI configuration and standard functions
     var uiConfig = {
       callbacks: {
         signInSuccessWithAuthResult: function (authResult, redirectUrl) {
@@ -58,7 +59,10 @@
       },
       // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
       signInFlow: 'popup',
+      // Where do you redirect users after successful signup
       signInSuccessUrl: '/index',
+      // What should users be able to sign up with?
+      // Our choices: Google, Email
       signInOptions: [
         // Leave the lines as is for the providers you want to offer your users.
         firebase.auth.GoogleAuthProvider.PROVIDER_ID,
@@ -69,124 +73,122 @@
       // Privacy policy url.
       privacyPolicyUrl: '#'
     };
-
+    // UI Start will wait until the page loads, and then load firebaseUI
+    ui.start('#firebaseui-auth-container', {
+      signInOptions: [
+        firebase.auth.EmailAuthProvider.PROVIDER_ID,
+        firebase.auth.GoogleAuthProvider.PROVIDER_ID
+      ]
+    });
+    // UI Start will take the firebaseUI config as a parameter and load the auth login
+    ui.start('#firebaseui-auth-container', uiConfig);
   </script>
-  <!-- Bring in Firebase UI -->
-  <script src="https://cdn.firebase.com/libs/firebaseui/3.1.1/firebaseui.js"></script>
-  <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.1.1/firebaseui.css" />
 
-  <link rel="stylesheet" type="text/css" href="style.css">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Firebase Database -->
+  <script src="https://www.gstatic.com/firebasejs/5.7.2/firebase-database.js"></script>
+  <!-- Firebase Database Initialization -->
+  <script> var database = firebase.database(); </script>
+
+  <!-- ============================================================================= -->
+  <!--#### INITIALIZATION SCRIPTS ####-->
+  <!-- Initializing Variables for Pail App -->
+  <script>
+    // Plaid Info
+    var access_token; //access token does WHAT
+    var publicToken; //public token does WHAT
+    var item_id; //item id does WHAT
+    // Budget Info
+    var remainingMoney = 0;
+    var budget = 0;
+    var spentMoney = 0;
+    // Transaction Info
+    var spendCats = []; //spendCats will store an array of all categories added to budget
+    var transObj = {}; //transObj is the transaction object for all loaded transactions
+    // User Info
+    var key; //does this do anything????
+    var uid; //this will store the user id of per firebase UI login
+  </script>
+  
 </head>
 
 <body>
-  <div class="login-modal w-100 h-100" style="z-index: 10000">
-    <main>
-      <div id="Banner" class="row card-panel teal lighten-3"></div>
+  <!-- ============================================================================= -->
+  <!--#### LOGIN MODAL ####-->
+  <!-- The login modal will display full page on /index load and prompt user to login using Firebase -->
+  <section class="login-modal w-100 h-100" style="z-index: 10000">
+    <!-- Main Modal Component -->
+    <!-- MODAL LOGO SECTION -->
+    <!-- Banner -->
+    <div id="Banner" class="row card-panel teal lighten-3"></div>
+    <!-- Logo Under Banner -->
+    <div class="container row"><img src="/images/Pail_Logo.png" height="125px"></div>
 
-      <div class="container row">
-        <img src="/images/Pail_Logo.png" height="125px">
-      </div>
+    <!-- MODAL SIGN-IN SECTION -->
+    <!-- Firebase UI Container -->
+    <div id="firebaseui-auth-container" class="col s2 offset-s3">
+      <!-- Firebase UI here -->
+    </div>
+    <!-- Loader will generate in place of the auth container until auth loads -->
+    <div id="loader" class="col s2 offset-s3 center">Loading login options...</div>
 
-      <br>
-
-      <!-- firebase ui here -->
-      <div id="firebaseui-auth-container" class="col s2 offset-s3">
-        <!-- loader here -->
-        <div id="loader" class="col s2 offset-s3">Loading...</div>
-      </div>
-
-      <div class="row wrapper center">
-        <button class=" btn-small btn-submit waves-effect waves-light teal scale-transition" id="loginButton">
-          Log in without Sign-on
-        </button>
-      </div>
-
-      <footer class="page-footer teal wrapper">
-        <div class="container">
-          <div class="row">
-            <div>
-              <h5 class="white-text">Footer Content</h5>
-            </div>
+    <!-- PAGE FOOTER SECTION -->
+    <!-- Footer -->
+    <footer class="page-footer teal wrapper">
+      <div class="container">
+        <div class="row">
+          <!-- Footer Info -->
+          <div>
+            <h5 class="white-text center">Footer Content</h5>
           </div>
         </div>
-        <div class="footer-copyright">
-          <div class="container">
-            © 2014 Copyright Text
-          </div>
+      </div>
+      <!-- Coppyright Text -->
+      <div class="footer-copyright">
+        <div class="container center">
+          © 2014 Copyright Text
         </div>
-      </footer>
+      </div>
+    </footer>
+  </section>
 
-
-    </main>
-
-
-  </div>
-  <div class="container" style="display: none">
-    <div id="login-steps" class="grid">
-      <div class="grid__column grid__column--is-twelve-columns">
+  <!-- ============================================================================= -->
+  <!--#### MAIN CONTENT SECTION ####-->
+  <main class="container" style="display: none">
+  <!--#### PLAID LOGIN WIZARD ####-->
+  <!-- The login wizard will allow the user to initialize the Plaid app login -->
+    <section id="login-steps" class="grid">
+        <!-- This banner will hold the heading text underneath the logo -->
         <div id="banner" class="everpresent-content">
+          <!-- Logo -->
           <img src="/assets/Pail_Logo.png" width="100" height="auto">
+          <!-- Initial website greeting -->
           <p id="intro" class="everpresent-content__subheading">
             Welcome to Pail! Connect your bank account to get the most out of Pail.
           </p>
+          <!-- When a user logs in with plaid successfully, this will show -->
           <p id="steps" class="everpresent-content__subheading">
             Success! You linked your account.
           </p>
         </div>
-
+        <!-- This container will hold the initial prompt for a user to log in with plaid -->
         <div id="container" class="initial-view">
+          <!-- Instructions for logging in with Plaid -->
           <p class="initial-view__description">
             Click the button below to open a list of Institutions. Select your bank and the accounts you would like to
             link.
           </p>
-
+          <!-- Login button for plaid -->
           <button id="link-btn" class="waves-effect waves-light btn"><i class="material-icons right">attach_money</i>Connect
             Your Account</button>
         </div>
-      </div>
-    </div>
+    </section>
 
+  <!--#### APP MAIN TRANSACTIONS VIEW ####-->
+  <!-- This section for displaying the views -->
+    <section id="app" class="connected-view">
 
-    <div id="app" class="connected-view">
-
-      <!-- Card that displays transactions to be sorted as discretionary or recurring -->
-      <div class="row" id="set-transactions-card">
-        <div class="col s12 m12">
-          <div class="card teal lighten-2">
-            <div class="card-content white-text">
-              <span class="card-title">Excellent! Your monthly budget has been set to <span id="budget-set"></span>!</span>
-              <p>Click the button below to load transactions from this month. Next, select transactions that
-                should be included in the Discretionary budget. Only Discretionary transactions will be tracked in your
-                budget.</p>
-            </div>
-            <div id="card-action" class="card-action">
-              <button id="get-transactions-btn" class="waves-effect waves-light btn">Get Transactions</button>
-              <table>
-                <tbody id="get-transactions-data"></tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Card that displays budget -->
-      <div class="row" id="budget-card">
-        <div class="col s12 m12">
-          <div class="card teal lighten-2">
-            <div class="card-content white-text">
-              <span class="card-title">Your Monthly Budget</span>
-              <span id="budget-card-body"></span>
-              <div id="budget-details" class="card-action"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      
-
-
-      <!-- Card to set you budget -->
+      <!--#### BUDGET SETUP CARD ####-->
+      <!-- Card will allow users to set their monthly discretionary spending budget -->
       <div class="row" id="set-budget-card">
         <div class="col s12 m12">
           <div class="card teal lighten-2">
@@ -206,52 +208,79 @@
           </div>
         </div>
       </div>
-      <div id="deals">
-        <!-- deals go here -->
+
+      <!--#### BUDGETING AND TRANSACTION SETUP CARD ####-->
+      <!-- Card will allow user to load transactions from Plaid -->
+      <!-- This card will load user transactions -->
+      <!-- The card will then allow users to assign transactions for inclusion in this budget -->
+      <div class="row" id="set-transactions-card">
+        <div class="col s12">
+          <div class="card teal lighten-2">
+            <div class="card-content white-text">
+              <!-- This text will accompany the budget slider -->
+              <span class="card-title">Excellent! Your monthly budget has been set to <span id="budget-set"></span>!</span>
+              <p>Click the button below to load transactions from this month. Next, select transactions that
+                should be included in the Discretionary budget. Only Discretionary transactions will be tracked in your
+                budget.</p>
+            </div>
+            <!-- Upon pressing the button here, transactions will be loaded and items will be hidden -->
+            <div id="card-action" class="card-action">
+              <button id="get-transactions-btn" class="waves-effect waves-light btn">Get Transactions</button>
+              <!-- On loading from Plaid, transactions will be displayed in the table below -->
+              <table>
+                  <tbody id="get-transactions-data"></tbody>
+                </table>
+            </div>
+          </div>
+        </div>
       </div>
 
+      <!--#### BUDGETING DISPLAY CARD ####-->
+      <!-- Card will display current budget and remaining money to spend -->
+      <div class="row" id="budget-card">
+        <div class="col s12 m12">
+          <div class="card teal lighten-2">
+            <div class="card-content white-text">
+              <span class="card-title">Your Monthly Budget</span>
+              <!-- Budget card body will display a meter of the current budget -->
+              <span id="budget-card-body"></span>
+              <!-- Budget details will hold descriptions of budget -->
+              <div id="budget-details" class="card-action center"></div>
+            </div>
+          </div>
+        </div>
+      </div>
 
+      <!--#### DEALS DISPLAY CARD ####-->
+      <!-- Pail will seek categories in the user's discretionary spending -->
+      <!-- When a new category is added, deals from discountAPI will display in this card -->
+      <div id="deals">
+        <!-- Deals go here -->
+      </div>
 
+    </section>
 
-    </div>
+  </main>
 
-  </div>
-
-
-  <!-- Start inline Javscript -->
+  <!-- ============================================================================= -->
+  <!--#### IMPORTS AFTER PAGE LOAD ####-->
+  <!-- Importing JQuery -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
+  <!-- Importing Plaid -->
   <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
+  <!-- Importing Materialize Javascript -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+  <!-- ============================================================================= -->
+  <!--#### PLAID SCRIPTING ####-->
+  <!-- Need Noah help explaining what all this does -->
   <script>
-    $('#loginButton').on('click', function () {
-      window.location = '/index';
-    });
-
-    // The start method will wait until the DOM is loaded.
-    ui.start('#firebaseui-auth-container', {
-      signInOptions: [
-        firebase.auth.EmailAuthProvider.PROVIDER_ID,
-        firebase.auth.GoogleAuthProvider.PROVIDER_ID
-      ],
-      // Other config options...
-    });
-    ui.start('#firebaseui-auth-container', uiConfig);
-  </script>
-  <script>
-    // GLOBAL VARS
-    var budget = 0;
-    var spentMoney = 0;
-    var spendCats = [];
-    var transObj = {};
-    var key;
-    var uid;
-
-
+    // Plaid Self-Executing Anon Function
     (function ($) {
       var products = '<%= PLAID_PRODUCTS %>'.split(',');
       if (products.includes('assets')) {
         $('#assets').show();
-      }
+      };
 
       var handler = Plaid.create({
         apiVersion: 'v2',
@@ -276,6 +305,7 @@
           });
         },
       });
+
       var accessToken = qs('access_token');
       if (accessToken != null && accessToken != '') {
         $.post('/set_access_token', {
@@ -288,13 +318,11 @@
             $('#app, #steps').fadeIn('slow');
           });
         });
-      }
+      };
 
       $('#link-btn').on('click', function (e) {
         handler.open();
       });
-
-
 
       $('#get-transactions-btn').on('click', function (e) {
         $.get('/transactions', function (data) {
@@ -351,22 +379,36 @@
         });
       });
     })(jQuery);
-
+    
+    // Plaid key parsing
     function qs(key) {
       key = key.replace(/[*+?^$.\[\]{}()|\\\/]/g, "\\$&"); // escape RegEx meta chars
       var match = location.search.match(new RegExp("[?&]" + key + "=([^&]+)(&|$)"));
       return match && decodeURIComponent(match[1].replace(/\+/g, " "));
     }
+  </script>
 
-    // Submits the users selected budget, fades out card.
+  <!-- ============================================================================= -->
+  <!--#### DOM MANIPULATION ####-->
+  <script>
+
+    // When user sets budget, the card to import transactions will appear
     $('#submit-budget').on('click', function () {
+      // Determine the budget based on slider value
       budget = parseInt($('#budget-amount').val());
-      console.log(budget);
+      // Fade out the budget setting slider card
       $('#set-budget-card').fadeOut();
+      // Initialize budget text
       $('#budget-set').text("$" + budget);
+      // Fade in transaction loading card
       $('#set-transactions-card').fadeIn();
+    });
 
-      if (uid && access_token && publicToken && item_id) {
+    // When a user has signed in with both Firebase and Plaid, user info will be stored in firebase
+    // The user info will be stored in an object under the user's ID
+    // Each time a user logs in, their information will be overwritten
+    // User information will persist with logins
+    if (uid && access_token && publicToken && item_id) {
         database.ref("/users/" + uid).set({
           "accessToken": access_token,
           "publicToken": publicToken,
@@ -376,182 +418,145 @@
           "budget": budget
         })
       };
-    });
 
-    // Function to include transaction in budge
-    $(document).on("click", "#include-btn", function () {
-      spentMoney = spentMoney + parseInt($(this).attr("data-txn"));
-      console.log(spentMoney);
-
-
-      var newCats = transObj[$(this).attr('data-num')].category;
-      // console.log(newCats);
-
-      spendCats = (spendCats.concat(newCats));
-      console.log(spendCats);
-
-
-      $(this).closest('tr').fadeOut();
-
-      // get coupons
-      spendCats.forEach(category => {
+    // Function will take an array of categories and display coupons related to them
+    const renderCoupons = (arr) =>{
+      // For each category in the array
+      arr.forEach(category => {
         // Constructing a queryURL using the category
-        var queryURL = "https://api.discountapi.com/v2/deals?api_key=JunrcDyn&page=1&per_page=5&query=" + category;
-        // Performing an AJAX request with the queryURL
+        var queryURL = "https://api.discountapi.com/v2/deals?api_key=JunrcDyn&page=1&per_page=5&query=" +
+          category;
+        // Performing an AJAX request to DiscountAPI with the queryURL
         $("#deals").empty();
         $.ajax({
           url: queryURL,
           method: "GET"
         }).then(res => {
+          // Store the deals
           var catDeals = res.deals;
+          // For each deal, display the info
           catDeals.forEach(dealObj => {
             var dealInfo = dealObj.deal;
             var dealTitle = dealInfo.short_title;
             var dealLink = dealInfo.url;
             var dealImg = dealInfo.image_url;
             var dealDiv = $("<div>");
-<<<<<<< HEAD
-            dealDiv.append("<li><img src="+dealImg+"/><a href="+dealLink+"<h3>"+dealTitle+"</h3></a><li>");
-=======
-            dealDiv.append("<a href=" + dealLink + "<h3>" + dealTitle + "</h3></a>");
->>>>>>> 07aa9ad82fc6fba3af67afed970545c7a22917fd
+            // Create an element with the info
+            dealDiv.append("<li><img src=" + dealImg + "/><a href=" + dealLink + "<h3>" + dealTitle +
+              "</h3></a><li>");
+            // Push the deal info to 
             $("#deals").append(dealDiv);
-          });
+          })
         })
-      });
+      })
+    };
+
+      // When the user clicks on the "inlude button in a transaction"
+    // The transaction will be added to their discretionary spending
+    $(document).on("click", "#include-btn", function () {
+      // Add transaction cost to the amount of money spent
+      spentMoney = spentMoney + parseInt($(this).attr("data-txn"));
+      // Store the category of the transaction
+      var newCat = transObj[$(this).attr('data-num')].category;
+      // If the spend categories array does not include the new category, add it
+      // Then render the coupons
+      if (!spendCats.includes(newCat)){
+        spendCats.push(newCat);
+        renderCoupons(spendCats);
+      }
+      // Fade out the row of the added category
+      $(this).closest('tr').fadeOut();
     });
 
-
-
-
-
-
-    // Shows budget card on click.
+    // When transactions have all been added, you can see the budget card
     $(document).on('click', '#submit-tran-btn', function () {
+      // Fade out the instructions
       $("#steps").fadeOut();
+      // Fade out the transactions
       $("#set-transactions-card").fadeOut();
+      // Fade in the card with budget meter
       $("#budget-card").fadeIn();
 
+      // Update the user's spent money in the database
       database.ref("users/" + uid).update({
         "spent": spentMoney,
       });
 
+      // Graph the user's budget with the meter display
       budgetGraphFunction();
-
-      // var budgetGraph = $('<div>');
-      // budgetGraph.attr("id", "budget-graph");
-      // budgetGraph.attr("class", "center-align teal darken-3");
-
-
-      // $('#budget-card-body').append(budgetGraph);
-
-      // var budgetSpent = $('<div>');
-      // budgetSpent.attr('id', 'budget-remaining');
-      // budgetSpent.attr("class", "center-align teal darken-1");
-
-      // if (spentMoney / budget * 400 < 400) {
-      //   var height = spentMoney / budget * 400;
-      // } else {
-      //   var height = 400;
-      // }
-
-      // if (height < 54) {
-      //   height = 53;
-      // } else {
-      //   budgetSpent.height(height);
-      // }
-
-      // if (400 - height < 54) {
-      //   budgetGraph.height(height + 53);
-      // } else if (height >= 400) {
-      //   budgetGraph.height(400);
-
-      // } else {
-      //   budgetGraph.height(400);
-      // }
-
-      // if (spentMoney > 0) {
-      //   budgetSpent.append($("<p id= 'money-text'>").text('($' + spentMoney + ')'));
-      // }
-
-      // budgetGraph.append(budgetSpent);
-
-      // remainingMoney = budget - spentMoney
-      // budgetGraph.append($("<p id= 'remaining-text'>").text('$' + remainingMoney));
-
-
-      // $('#budget-details').text("You have spent $" + spentMoney + " so far this month, and have $" + remainingMoney +
-      //   " left in you budget.")
-
     });
 
 
-
-
-    firebase.auth().onAuthStateChanged(function (user) {
-      console.log(budget)
-      loadData(user.uid, user);
-
-    });
-
-
-    var loadData = function (id, user) {
+    // When a user logs in, check if they exist
+    // If a user exists, it will take them directly to the budget screen
+    // If a user does not exist, it will take them to setup
+    const loadData = function (id, user) {
+      // seek for the user's ID in our user database
       database.ref('/users/' + id).once('value', function (snapshot) {
-        
-        if (snapshot.exists()){
-        budget = snapshot.val().budget;
-        console.log(snapshot.val().budget);
+        // If there is a snapshot, so if the user exists
+        if (snapshot.exists()) {
+          // Update the local budget with the database budget
+          budget = snapshot.val().budget;
         }
+        // If the user exists and the budget is not 0
         if (user && budget != 0) {
+          // Store the user ID locally
           uid = user.uid
-          console.log(uid);
+          // Hide setup views
           $(".login-modal").hide();
           $(".container").attr('style', "display:block");
           $("#steps").hide();
           $("#container").hide();
           $("#intro").hide();
           $("#app").fadeIn();
-
+          // Hide budgeting views
           $('#set-budget-card').hide();
           $("#budget-card").fadeIn();
-
+          // Get data from firebase for this user
           getDataFromFirebase();
 
+          // If user exists and budget is 0
         } else if (user) {
+          // Store the user ID locally - THIS SHOULD BE OUTSIDE THE LOOP
           uid = user.uid
-          console.log(uid);
+          // Hide the login modal
           $(".login-modal").hide();
           $(".container").attr('style', "display:block");
+
+          // If nobody is logged in
         } else {
           console.log("no user signed in.")
 
         }
-      });
-    }
+      })
+    };
 
-    var getDataFromFirebase = function () {
-      database.ref('/users/' + uid).once('value', function (snapshot) {
-        budget = snapshot.val().budget;
-        spentMoney = snapshot.val().spent;
-        budgetGraphFunction();
-      });
-    }
+    // Pulls the user's auth information when they log in
+    // This will allow the user info to be stored in firebase
+    firebase.auth().onAuthStateChanged(function (user) {
+      loadData(user.uid, user);
+    });
 
-    var budgetGraphFunction = function () {
-
+    // Budget Graph Function will display user's budget and spending
+    // info as a graph on the main app page
+    const budgetGraphFunction = function () {
+      // Clear the budget card
       $('#budget-card-body').html('');
 
+      // Create an element to store the total budget graph
       var budgetGraph = $('<div>');
       budgetGraph.attr("id", "budget-graph");
       budgetGraph.attr("class", "center-align teal darken-3");
 
-
+      // Put this element in the budget card
       $('#budget-card-body').append(budgetGraph);
 
+      // Create an element to store the spentMondey graph
       var budgetSpent = $('<div>');
       budgetSpent.attr('id', 'budget-remaining');
       budgetSpent.attr("class", "center-align teal darken-1");
 
+      // Sets max and min heights for the budget graph
       if (spentMoney / budget * 400 < 400) {
         var height = spentMoney / budget * 400;
       } else {
@@ -575,6 +580,8 @@
 
       if (spentMoney > 0) {
         budgetSpent.append($("<p id= 'money-text'>").text('($' + spentMoney + ')'));
+      } else{
+        budgetSpend.append($("<p id= 'money-text'>").text('Boi you broke AF'))
       }
 
       budgetGraph.append(budgetSpent);
@@ -582,16 +589,22 @@
       remainingMoney = budget - spentMoney
       budgetGraph.append($("<p id= 'remaining-text'>").text('$' + remainingMoney));
 
-
       $('#budget-details').text("You have spent $" + spentMoney + " so far this month, and have $" + remainingMoney +
         " left in you budget.")
     }
 
-
-
-
+    // Get data from FB will pull user budget data and render the budget graph
+    const getDataFromFirebase = () => {
+      database.ref('/users/' + uid).once('value', function (snapshot) {
+        // Store firebase budget values locally
+        budget = snapshot.val().budget;
+        spentMoney = snapshot.val().spent;
+        // Graph the budget
+        budgetGraphFunction();
+      });
+    }
 
   </script>
-</body>
 
+</body>
 </html>

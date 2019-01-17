@@ -1,26 +1,28 @@
+// Javascript in strict mode
 'use strict';
 
-var util = require('util');
+// =============================================================================
+// #### IMPORTS ####
 
+// Import Utilities
+var util = require('util');
+// Import EnvVar
 var envvar = require('envvar');
+// Import Express
 var express = require('express');
+// Import BodyParser
 var bodyParser = require('body-parser');
+// Import MomentJS
 var moment = require('moment');
+// Import Plaid
 var plaid = require('plaid');
+// Import Firebase
 var firebase = require("firebase");
 
+// =============================================================================
+// #### PLAID SETUP ####
 
-// Firebase Inclusion
-var firebaseConfig = {
-  apiKey: "AIzaSyBiqwDiXaTG3-qqRjrMybgdXMikDP6tmSk",
-  authDomain: "gt-coding-project-1.firebaseapp.com",
-  databaseURL: "https://gt-coding-project-1.firebaseio.com",
-  projectId: "gt-coding-project-1",
-  storageBucket: "gt-coding-project-1.appspot.com",
-  messagingSenderId: "705133084492"
-};
-var firebaseApp = firebase.initializeApp(firebaseConfig);
-
+// Storing Plaid variables
 var APP_PORT = envvar.number('APP_PORT', 2500);
 var PLAID_CLIENT_ID = envvar.string('PLAID_CLIENT_ID', '5c35daa348339d00116019bd');
 var PLAID_SECRET = envvar.string('PLAID_SECRET', 'e06aa7eba75a28905110f48a1cc097');
@@ -34,11 +36,6 @@ var PLAID_PRODUCTS = envvar.string('PLAID_PRODUCTS', 'transactions');
 
 // We store the access_token in memory - in production, store it in a secure
 // persistent data store
-
-// Store these in firebase!!!
-var ACCESS_TOKEN = null;
-var PUBLIC_TOKEN = null;
-var ITEM_ID = null;
 
 // Initialize the Plaid client
 // Find your API keys in the Dashboard (https://dashboard.plaid.com/account/keys)
