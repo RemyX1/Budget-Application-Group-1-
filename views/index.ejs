@@ -442,8 +442,13 @@
             var dealImg = dealInfo.image_url;
             var dealDiv = $("<div>");
             // Create an element with the info
-            dealDiv.append("<li><img src=" + dealImg + "/><a href=" + dealLink + "<h3>" + dealTitle +
-              "</h3></a><li>");
+            var anchor = $("<a href='" + dealLink + "'><img src=" + dealImg + "/><h3>" + dealTitle + "</h3></a>");
+            dealDiv.addClass("row")
+            anchor.addClass("card-panel teal white-text col s3 offset-s1")
+            $("#deals").append(dealDiv);
+            
+            dealDiv.append(anchor)
+            dealDiv.style.margin-bottom
             // Push the deal info to 
             $("#deals").append(dealDiv);
           })
