@@ -404,20 +404,7 @@
       // Fade in transaction loading card
       $('#set-transactions-card').fadeIn();
 
-      // When a user has signed in with both Firebase and Plaid, user info will be stored in firebase
-      // The user info will be stored in an object under the user's ID
-      // Each time a user logs in, their information will be overwritten
-      // User information will persist with logins
-      if (uid && access_token && publicToken && item_id) {
-          database.ref("/users/" + uid).set({
-            "accessToken": access_token,
-            "publicToken": publicToken,
-            "itemID": item_id,
-            "remaining": parseInt(remainingMoney),
-            "spent": 0,
-            "budget": parseInt(budget)
-          })
-        };
+      
     });
 
     // Function will take an array of categories and display coupons related to them
@@ -486,8 +473,23 @@
       // Update the user's spent money in the database
       database.ref("users/" + uid).update({
         "spent": spentMoney,
+        
       });
-
+      // When a user has signed in with both Firebase and Plaid, user info will be stored in firebase
+      // The user info will be stored in an object under the user's ID
+      // Each time a user logs in, their information will be overwritten
+      // User information will persist with logins
+      if (uid && access_token && publicToken && item_id) {
+          database.ref("/users/" + uid).set({
+            "accessToken": access_token,
+            "publicToken": publicToken,
+            "itemID": item_id,
+            "remaining": parseInt(remainingMoney),
+            "spent": 0,
+            "budget": parseInt(budget),
+            "spendCats": spendCats
+          })
+        };
       // Graph the user's budget with the meter display
       budgetGraphFunction();
     });
@@ -584,10 +586,10 @@
         budgetGraph.height(400);
       }
 
-      if (spentMoney > 0) {
+      if (spentMoney >= 0) {
         budgetSpent.append($("<p id= 'money-text'>").text('($' + spentMoney + ')'));
       } else{
-        budgetSpend.append($("<p id= 'money-text'>").text('Boi you broke AF'))
+        budgetSpent.append($("<p id= 'money-text'>").text('Boi you broke AF'))
       }
 
       budgetGraph.append(budgetSpent);
@@ -605,8 +607,10 @@
         // Store firebase budget values locally
         budget = parseInt(snapshot.val().budget);
         spentMoney = parseInt(snapshot.val().spent);
+        spendCats = snapshot.val().spendCats;
         // Graph the budget
         budgetGraphFunction();
+        renderCoupons(spendCats);
       });
     }
 
