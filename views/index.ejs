@@ -84,6 +84,7 @@
     ui.start('#firebaseui-auth-container', uiConfig);
   </script>
 
+
   <!-- Firebase Database -->
   <script src="https://www.gstatic.com/firebasejs/5.7.2/firebase-database.js"></script>
   <!-- Firebase Database Initialization -->
@@ -444,10 +445,11 @@
             // Create an element with the info
             var anchor = $("<a href='" + dealLink + "'><img src=" + dealImg + "/><h3>" + dealTitle + "</h3></a>");
             dealDiv.addClass("row")
-            anchor.addClass("card-panel teal white-text col s3 offset-s1")
+            anchor.addClass("card-panel teal white-text col m5 offset-s1")
             $("#deals").append(dealDiv);
 
             dealDiv.append(anchor)
+
             // Push the deal info to the deals Div
             $("#deals").append(dealDiv);
           })
