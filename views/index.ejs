@@ -255,7 +255,7 @@
       <!--#### DEALS DISPLAY CARD ####-->
       <!-- Pail will seek categories in the user's discretionary spending -->
       <!-- When a new category is added, deals from discountAPI will display in this card -->
-      <div id="deals">
+      <div id="deals" class="row">
         <!-- Deals go here -->
       </div>
 
@@ -428,17 +428,10 @@
             var dealTitle = dealInfo.short_title;
             var dealLink = dealInfo.url;
             var dealImg = dealInfo.image_url;
-            var dealDiv = $("<div>");
             // Create an element with the info
-            var anchor = $("<a href='" + dealLink + "'><img src=" + dealImg + "/><h3>" + dealTitle + "</h3></a>");
-            dealDiv.addClass("row")
-            anchor.addClass("card-panel teal white-text col m5 offset-s1")
-            $("#deals").append(dealDiv);
-
-            dealDiv.append(anchor)
-
+            var div = $("<div style='margin: 5 10; height: 200px; overflow: hidden' class='card-panel teal white-text col s10 m6 offset-s1'><a class='valign-wrapper' href='" + dealLink + "'><img src=" + dealImg + " class='col m6' style='padding: 10px; height: 200px; width: 200px;'/><span class='col m6 white-text' style='text-decoration: none;'>" + dealTitle + "</span></a></div>");
             // Push the deal info to the deals Div
-            $("#deals").append(dealDiv);
+            $("#deals").append(div);
           })
         })
       })
@@ -450,13 +443,15 @@
       // Add transaction cost to the amount of money spent
       spentMoney = spentMoney + parseInt($(this).attr("data-txn"));
       // Store the category of the transaction
-      var newCat = transObj[$(this).attr('data-num')].category;
+      var newCatArr = transObj[$(this).attr('data-num')].category;
       // If the spend categories array does not include the new category, add it
       // Then render the coupons
-      if (!spendCats.includes(newCat)){
-        spendCats.push(newCat);
-        renderCoupons(spendCats);
-      }
+      newCatArr.forEach(cat => {
+        if (!spendCats.includes(cat)){
+          spendCats.push(cat);
+          renderCoupons(spendCats);
+        }
+      });
       // Fade out the row of the added category
       $(this).closest('tr').fadeOut();
     });
