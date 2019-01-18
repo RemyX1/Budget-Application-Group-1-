@@ -257,7 +257,7 @@ app.get('/item', function (request, response, next) {
 
 // instead of APP_PORT we grab heroku's port
 // var server = app.listen(process.env.PORT || port, function () {
-var server = app.listen(APP_PORT, function () {
+var server = app.listen(process.env.PORT || APP_PORT, function () {
 
   console.log('plaid-quickstart server listening on port ' + APP_PORT);
 });
