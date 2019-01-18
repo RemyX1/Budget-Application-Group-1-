@@ -25,13 +25,13 @@
   <!-- Firebase Core App Initialization -->
   <script>
     firebase.initializeApp({
-          apiKey: "AIzaSyBiqwDiXaTG3-qqRjrMybgdXMikDP6tmSk",
-          authDomain: "gt-coding-project-1.firebaseapp.com",
-          databaseURL: "https://gt-coding-project-1.firebaseio.com",
-          projectId: "gt-coding-project-1",
-          storageBucket: "gt-coding-project-1.appspot.com",
-          messagingSenderId: "705133084492"
-        });
+      apiKey: "AIzaSyBiqwDiXaTG3-qqRjrMybgdXMikDP6tmSk",
+      authDomain: "gt-coding-project-1.firebaseapp.com",
+      databaseURL: "https://gt-coding-project-1.firebaseio.com",
+      projectId: "gt-coding-project-1",
+      storageBucket: "gt-coding-project-1.appspot.com",
+      messagingSenderId: "705133084492"
+    });
   </script>
 
   <!-- Firebase Authentication -->
@@ -42,7 +42,7 @@
   <!-- Initialize the firebase UI authentication -->
   <script>
     var ui = new firebaseui.auth.AuthUI(firebase.auth());
-        // Firebase Auth UI configuration and standard functions
+    // Firebase Auth UI configuration and standard functions
     var uiConfig = {
       callbacks: {
         signInSuccessWithAuthResult: function (authResult, redirectUrl) {
@@ -109,22 +109,26 @@
     var key = 'abc'; //does this do anything????
     var uid = 'ABC'; //this will store the user id of per firebase UI login
   </script>
-  
+
 </head>
 
 <body>
   <!-- ============================================================================= -->
   <!--#### LOGIN MODAL ####-->
   <!-- The login modal will display full page on /index load and prompt user to login using Firebase -->
-  <section class="login-modal w-100 h-100" style="z-index: 10000">
+  <section class="login-modal w-100 h-100" style="z-index: 10000; margin-top: -7px">
     <!-- Main Modal Component -->
     <!-- MODAL LOGO SECTION -->
     <!-- Banner -->
-    <div id="Banner" class="row card-panel teal lighten-3"></div>
-    <!-- Logo Under Banner -->
-    <div class="container row"><img src="/images/Pail_Logo.png" height="125px"></div>
-
+    <header>
+      <div id="Banner" class="row card-panel">
+        <div class="container">
+          <img src="/images/Pail_Logo.png" width="100" height="auto">
+        </div>
+      </div>
+    </header>
     <!-- MODAL SIGN-IN SECTION -->
+    <h4 class="center-align" style="margin-top:50px;">Sign in with your email.</h4>
     <!-- Firebase UI Container -->
     <div id="firebaseui-auth-container" class="col s2 offset-s3">
       <!-- Firebase UI here -->
@@ -134,58 +138,43 @@
 
     <!-- PAGE FOOTER SECTION -->
     <!-- Footer -->
-    <footer class="page-footer teal wrapper">
-      <div class="container">
-        <div class="row">
-          <!-- Footer Info -->
-          <div>
-            <h5 class="white-text center">Footer Content</h5>
-          </div>
-        </div>
-      </div>
-      <!-- Coppyright Text -->
-      <div class="footer-copyright">
-        <div class="container center">
-          © 2014 Copyright Text
-        </div>
-      </div>
-    </footer>
+    
   </section>
 
   <!-- ============================================================================= -->
   <!--#### MAIN CONTENT SECTION ####-->
   <main class="container" style="display: none">
-  <!--#### PLAID LOGIN WIZARD ####-->
-  <!-- The login wizard will allow the user to initialize the Plaid app login -->
+    <!--#### PLAID LOGIN WIZARD ####-->
+    <!-- The login wizard will allow the user to initialize the Plaid app login -->
     <section id="login-steps" class="grid">
-        <!-- This banner will hold the heading text underneath the logo -->
-        <div id="banner" class="everpresent-content">
-          <!-- Logo -->
-          <img src="/assets/Pail_Logo.png" width="100" height="auto">
-          <!-- Initial website greeting -->
-          <p id="intro" class="everpresent-content__subheading">
-            Welcome to Pail! Connect your bank account to get the most out of Pail.
-          </p>
-          <!-- When a user logs in with plaid successfully, this will show -->
-          <p id="steps" class="everpresent-content__subheading">
-            Success! You linked your account.
-          </p>
-        </div>
-        <!-- This container will hold the initial prompt for a user to log in with plaid -->
-        <div id="container" class="initial-view">
-          <!-- Instructions for logging in with Plaid -->
-          <p class="initial-view__description">
-            Click the button below to open a list of Institutions. Select your bank and the accounts you would like to
-            link.
-          </p>
-          <!-- Login button for plaid -->
-          <button id="link-btn" class="waves-effect waves-light btn"><i class="material-icons right">attach_money</i>Connect
-            Your Account</button>
-        </div>
+      <!-- This banner will hold the heading text underneath the logo -->
+      <div id="banner" class="everpresent-content">
+        <!-- Logo -->
+        <img src="/assets/Pail_Logo.png" width="100" height="auto">
+        <!-- Initial website greeting -->
+        <p id="intro" class="everpresent-content__subheading">
+          Welcome to Pail! Connect your bank account to get the most out of Pail.
+        </p>
+        <!-- When a user logs in with plaid successfully, this will show -->
+        <p id="steps" class="everpresent-content__subheading">
+          Success! You linked your account.
+        </p>
+      </div>
+      <!-- This container will hold the initial prompt for a user to log in with plaid -->
+      <div id="container" class="initial-view">
+        <!-- Instructions for logging in with Plaid -->
+        <p class="initial-view__description">
+          Click the button below to open a list of Institutions. Select your bank and the accounts you would like to
+          link.
+        </p>
+        <!-- Login button for plaid -->
+        <button id="link-btn" class="waves-effect waves-light btn"><i class="material-icons right">attach_money</i>Connect
+          Your Account</button>
+      </div>
     </section>
 
-  <!--#### APP MAIN TRANSACTIONS VIEW ####-->
-  <!-- This section for displaying the views -->
+    <!--#### APP MAIN TRANSACTIONS VIEW ####-->
+    <!-- This section for displaying the views -->
     <section id="app" class="connected-view">
 
       <!--#### BUDGET SETUP CARD ####-->
@@ -229,8 +218,8 @@
               <button id="get-transactions-btn" class="waves-effect waves-light btn">Get Transactions</button>
               <!-- On loading from Plaid, transactions will be displayed in the table below -->
               <table>
-                  <tbody id="get-transactions-data"></tbody>
-                </table>
+                <tbody id="get-transactions-data"></tbody>
+              </table>
             </div>
           </div>
         </div>
@@ -380,7 +369,7 @@
         });
       });
     })(jQuery);
-    
+
     // Plaid key parsing
     function qs(key) {
       key = key.replace(/[*+?^$.\[\]{}()|\\\/]/g, "\\$&"); // escape RegEx meta chars
@@ -404,11 +393,11 @@
       // Fade in transaction loading card
       $('#set-transactions-card').fadeIn();
 
-      
+
     });
 
     // Function will take an array of categories and display coupons related to them
-    const renderCoupons = (arr) =>{
+    const renderCoupons = (arr) => {
       // For each category in the array
       arr.forEach(category => {
         // Constructing a queryURL using the category
@@ -444,7 +433,7 @@
       })
     };
 
-      // When the user clicks on the "inlude button in a transaction"
+    // When the user clicks on the "inlude button in a transaction"
     // The transaction will be added to their discretionary spending
     $(document).on("click", "#include-btn", function () {
       // Add transaction cost to the amount of money spent
@@ -453,7 +442,7 @@
       var newCat = transObj[$(this).attr('data-num')].category;
       // If the spend categories array does not include the new category, add it
       // Then render the coupons
-      if (!spendCats.includes(newCat)){
+      if (!spendCats.includes(newCat)) {
         spendCats.push(newCat);
         renderCoupons(spendCats);
       }
@@ -469,27 +458,23 @@
       $("#set-transactions-card").fadeOut();
       // Fade in the card with budget meter
       $("#budget-card").fadeIn();
+   
 
-      // Update the user's spent money in the database
-      database.ref("users/" + uid).update({
-        "spent": spentMoney,
-        
-      });
       // When a user has signed in with both Firebase and Plaid, user info will be stored in firebase
       // The user info will be stored in an object under the user's ID
       // Each time a user logs in, their information will be overwritten
       // User information will persist with logins
       if (uid && access_token && publicToken && item_id) {
-          database.ref("/users/" + uid).set({
-            "accessToken": access_token,
-            "publicToken": publicToken,
-            "itemID": item_id,
-            "remaining": parseInt(remainingMoney),
-            "spent": 0,
-            "budget": parseInt(budget),
-            "spendCats": spendCats
-          })
-        };
+        database.ref("/users/" + uid).set({
+          "accessToken": access_token,
+          "publicToken": publicToken,
+          "itemID": item_id,
+          "remaining": parseInt(remainingMoney),
+          "spent": spentMoney,
+          "budget": parseInt(budget),
+          "spendCats": spendCats
+        })
+      };
       // Graph the user's budget with the meter display
       budgetGraphFunction();
     });
@@ -588,7 +573,7 @@
 
       if (spentMoney >= 0) {
         budgetSpent.append($("<p id= 'money-text'>").text('($' + spentMoney + ')'));
-      } else{
+      } else {
         budgetSpent.append($("<p id= 'money-text'>").text('Boi you broke AF'))
       }
 
@@ -607,6 +592,7 @@
         // Store firebase budget values locally
         budget = parseInt(snapshot.val().budget);
         spentMoney = parseInt(snapshot.val().spent);
+        console.log(spentMoney);
         spendCats = snapshot.val().spendCats;
         // Graph the budget
         budgetGraphFunction();
@@ -617,4 +603,5 @@
   </script>
 
 </body>
+
 </html>
