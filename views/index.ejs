@@ -75,8 +75,9 @@
   <script src="https://cdn.firebase.com/libs/firebaseui/3.1.1/firebaseui.js"></script>
   <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.1.1/firebaseui.css" />
 
-  <link rel="stylesheet" type="text/css" href="style.css">
+   
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  
 </head>
 
 <body>
@@ -411,10 +412,10 @@
             var dealDiv = $("<div>");
             var anchor = $("<a href=" + dealLink + "<h3>" + dealTitle + "</h3></a>");
             dealDiv.addClass("row")
-            anchor.addClass("card-panel teal white-text col s3 offset-s1")
+            anchor.addClass("card-panel teal white-text col m5 offset-s1")
             $("#deals").append(dealDiv);
             dealDiv.append(anchor)
-            dealDiv.style.margin-bottom
+    
           });
         })
       });
