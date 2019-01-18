@@ -418,7 +418,7 @@
             var dealLink = dealInfo.url;
             var dealImg = dealInfo.image_url;
             // Create an element with the info
-            var div = $("<div style='margin: 5 10; height: 200px; overflow: hidden' class='card-panel teal white-text col s10 m6 offset-s1'><a class='valign-wrapper' href='" + dealLink + "'><img src=" + dealImg + " class='col m6' style='padding: 10px; height: 200px; width: 200px;'/><span class='col m6 white-text' style='text-decoration: none;'>" + dealTitle + "</span></a></div>");
+            var div = $("<div style='border: 5px solid white; margin: 5px 0; height: 200px; overflow: hidden' class='card-panel teal white-text col s10 m6 offset-s1 offset-2'><a class='valign-wrapper' href='" + dealLink + "'><img src=" + dealImg + " class='col m6' style='padding: 10px; height: 200px; width: 200px;'/><span class='col m6 white-text' style='text-decoration: none;'>" + dealTitle + "</span></a></div>");
             // Push the deal info to the deals Div
             $("#deals").append(div);
           })
