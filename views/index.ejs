@@ -105,8 +105,8 @@
     var spendCats = []; //spendCats will store an array of all categories added to budget
     var transObj = {}; //transObj is the transaction object for all loaded transactions
     // User Info
-    var key; //does this do anything????
-    var uid; //this will store the user id of per firebase UI login
+    var key = 'abc'; //does this do anything????
+    var uid = 'ABC'; //this will store the user id of per firebase UI login
   </script>
   
 </head>
@@ -402,22 +402,22 @@
       $('#budget-set').text("$" + budget);
       // Fade in transaction loading card
       $('#set-transactions-card').fadeIn();
-    });
 
-    // When a user has signed in with both Firebase and Plaid, user info will be stored in firebase
-    // The user info will be stored in an object under the user's ID
-    // Each time a user logs in, their information will be overwritten
-    // User information will persist with logins
-    if (uid && access_token && publicToken && item_id) {
-        database.ref("/users/" + uid).set({
-          "accessToken": access_token,
-          "publicToken": publicToken,
-          "itemID": item_id,
-          "remaining": remainingMoney,
-          "spent": 0,
-          "budget": budget
-        })
-      };
+      // When a user has signed in with both Firebase and Plaid, user info will be stored in firebase
+      // The user info will be stored in an object under the user's ID
+      // Each time a user logs in, their information will be overwritten
+      // User information will persist with logins
+      if (uid && access_token && publicToken && item_id) {
+          database.ref("/users/" + uid).set({
+            "accessToken": access_token,
+            "publicToken": publicToken,
+            "itemID": item_id,
+            "remaining": parseInt(remainingMoney),
+            "spent": 0,
+            "budget": parseInt(budget)
+          })
+        };
+    });
 
     // Function will take an array of categories and display coupons related to them
     const renderCoupons = (arr) =>{
@@ -590,7 +590,7 @@
 
       budgetGraph.append(budgetSpent);
 
-      remainingMoney = budget - spentMoney
+      remainingMoney = budget - spentMoney;
       budgetGraph.append($("<p id= 'remaining-text'>").text('$' + remainingMoney));
 
       $('#budget-details').text("You have spent $" + spentMoney + " so far this month, and have $" + remainingMoney +
@@ -601,8 +601,8 @@
     const getDataFromFirebase = () => {
       database.ref('/users/' + uid).once('value', function (snapshot) {
         // Store firebase budget values locally
-        budget = snapshot.val().budget;
-        spentMoney = snapshot.val().spent;
+        budget = parseInt(snapshot.val().budget);
+        spentMoney = parseInt(snapshot.val().spent);
         // Graph the budget
         budgetGraphFunction();
       });
